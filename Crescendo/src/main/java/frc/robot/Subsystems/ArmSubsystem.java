@@ -36,13 +36,13 @@ public class ArmSubsystem extends SubsystemBase {
 
   }
 
+  public void control (){
+    MAmr1.setControl(MVolPos1.withPosition(0));
+    
+  }
+
   public ArmSubsystem() {}
 
   @Override
   public void periodic() {}
-
-  public void control (){
-
-    MAmr1.setControl(MVolPos1.withPosition(0));
-  }
 }
