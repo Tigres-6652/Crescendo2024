@@ -10,25 +10,20 @@ public class ArmSubsystem extends SubsystemBase {
 
   TalonFX MAmr1 = new TalonFX (7);
   
-
-ProfiledPIDController pidController =new ProfiledPIDController(0.19, 0.05, 0.0020, new TrapezoidProfile.Constraints(80, 90));
+  ProfiledPIDController pidController =new ProfiledPIDController
+  (0.19, 0.17, 0.0025, new TrapezoidProfile.Constraints(80, 90));
 
   public void TalonFXConfigs () {
-
-    //MAmr1.getConfigurator().apply(new TalonFXConfiguration());
-
     MAmr1.setPosition(0);
 
   }
-  public void control (){
 
-var signal= MAmr1.getPosition();
+  public void control () {
+    var signal= MAmr1.getPosition();
+    double posicion = signal.getValue();
 
-double posicion = signal.getValue();
-
-SmartDashboard.putNumber("Posicion mot", posicion);
-
-MAmr1.set(pidController.calculate(posicion,15.3333));
+    SmartDashboard.putNumber("Posicion mot", posicion);
+    MAmr1.set(pidController.calculate(posicion,15));
 
   }
 

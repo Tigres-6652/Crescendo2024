@@ -24,14 +24,13 @@ public ArmCommand (ArmSubsystem armSubsystem, Supplier<Boolean> FunArm){
   @Override
   public void initialize() {
     armSubsystem.TalonFXConfigs();
+
   }
 
   @Override
   public void execute() {
-
     armSubsystem.control();
 
-    
   }
 
   @Override
