@@ -28,9 +28,10 @@ public ArmCommand (ArmSubsystem armSubsystem, Supplier<Boolean> FunArm){
 
   @Override
   public void execute() {
-    if(FunArm.get()){
+
     armSubsystem.control();
-    }
+
+    
   }
 
   @Override
