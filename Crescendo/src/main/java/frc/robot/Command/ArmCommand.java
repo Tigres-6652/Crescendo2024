@@ -1,7 +1,3 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.robot.Command;
 
 import java.util.function.Supplier;
@@ -12,9 +8,11 @@ import frc.robot.Subsystems.ArmSubsystem;
 public class ArmCommand extends Command {
 
   private final ArmSubsystem armSubsystem;
-  private Supplier<Boolean> FunArm;
+  private Supplier<Boolean> FunArm, Boton_0, Boton_90;
 
-public ArmCommand (ArmSubsystem armSubsystem, Supplier<Boolean> FunArm){
+public ArmCommand (ArmSubsystem armSubsystem, Supplier<Boolean> FunArm, Supplier<Boolean> Boton_0, Supplier<Boolean> Boton_90){
+  this.Boton_0 = Boton_0;
+  this.Boton_90 = Boton_90;
   this.FunArm = FunArm;
   this.armSubsystem = armSubsystem;
   addRequirements(armSubsystem);
@@ -22,14 +20,11 @@ public ArmCommand (ArmSubsystem armSubsystem, Supplier<Boolean> FunArm){
 }
 
   @Override
-  public void initialize() {
-    armSubsystem.TalonFXConfigs();
-
-  }
+  public void initialize() {}
 
   @Override
   public void execute() {
-    armSubsystem.control();
+    armSubsystem.Botones(Boton_0.get(), Boton_90.get());
 
   }
 
