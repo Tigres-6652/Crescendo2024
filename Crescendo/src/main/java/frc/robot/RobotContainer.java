@@ -4,15 +4,33 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.Command.ArmCommand;
+import frc.robot.Command.ChasisCommand;
+import frc.robot.Subsystems.ArmSubsystem;
+import frc.robot.Subsystems.ChasisSubsystem;
 
 public class RobotContainer {
+
+  private final ChasisSubsystem chasisSubsystem = new ChasisSubsystem();
+  private final ArmSubsystem armSubsystem = new ArmSubsystem();
+
+  private final Joystick Ctrl = new Joystick(0);
+
   public RobotContainer() {
     configureBindings();
   }
 
-  private void configureBindings() {}
+  private void configureBindings() {
+  chasisSubsystem.setDefaultCommand(new ChasisCommand(chasisSubsystem, () -> Ctrl.getRawAxis(1), () -> Ctrl.getRawAxis(4)));
+
+  new JoystickButton(Ctrl, 2).toggleOnTrue(new ArmCommand(armSubsystem, () -> false , () -> true, () -> false));
+  new JoystickButton(Ctrl, 1).toggleOnTrue(new ArmCommand(armSubsystem, () -> false , () -> false, () -> true));
+ 
+  }
 
   public Command getAutonomousCommand() {
     return Commands.print("No autonomous command configured");
