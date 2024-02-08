@@ -9,26 +9,26 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Command.ArmCommand;
-import frc.robot.Command.ChasisCommand;
+import frc.robot.Command.DriveCommand;
 import frc.robot.Subsystems.ArmSubsystem;
-import frc.robot.Subsystems.ChasisSubsystem;
+import frc.robot.Subsystems.DriveSubsystem;
 
 public class RobotContainer {
 
-  private final ChasisSubsystem chasisSubsystem = new ChasisSubsystem();
+  private final DriveSubsystem driveSubsystem = new DriveSubsystem();
   private final ArmSubsystem armSubsystem = new ArmSubsystem();
 
-  private final Joystick Ctrl = new Joystick(0);
+  private final Joystick XboxController = new Joystick(0);
 
   public RobotContainer() {
     configureBindings();
   }
 
   private void configureBindings() {
-  chasisSubsystem.setDefaultCommand(new ChasisCommand(chasisSubsystem, () -> Ctrl.getRawAxis(1), () -> Ctrl.getRawAxis(4)));
+  driveSubsystem.setDefaultCommand(new DriveCommand(driveSubsystem, () -> XboxController.getRawAxis(1), () -> XboxController.getRawAxis(4)));
 
-  new JoystickButton(Ctrl, 2).toggleOnTrue(new ArmCommand(armSubsystem, () -> false , () -> true, () -> false));
-  new JoystickButton(Ctrl, 1).toggleOnTrue(new ArmCommand(armSubsystem, () -> false , () -> false, () -> true));
+  new JoystickButton(XboxController, 2).toggleOnTrue(new ArmCommand(armSubsystem, () -> true, () -> false));
+  new JoystickButton(XboxController, 1).toggleOnTrue(new ArmCommand(armSubsystem, () -> false, () -> true));
  
   }
 

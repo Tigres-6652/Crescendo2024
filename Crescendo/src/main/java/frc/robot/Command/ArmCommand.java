@@ -8,12 +8,11 @@ import frc.robot.Subsystems.ArmSubsystem;
 public class ArmCommand extends Command {
 
   private final ArmSubsystem armSubsystem;
-  private Supplier<Boolean> FunArm, Boton_0, Boton_90;
+  private Supplier<Boolean> Boton_0, Boton_90;
 
-public ArmCommand (ArmSubsystem armSubsystem, Supplier<Boolean> FunArm, Supplier<Boolean> Boton_0, Supplier<Boolean> Boton_90){
+public ArmCommand (ArmSubsystem armSubsystem, Supplier<Boolean> Boton_0, Supplier<Boolean> Boton_90){
   this.Boton_0 = Boton_0;
   this.Boton_90 = Boton_90;
-  this.FunArm = FunArm;
   this.armSubsystem = armSubsystem;
   addRequirements(armSubsystem);
 
