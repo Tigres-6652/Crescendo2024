@@ -56,4 +56,14 @@ public class DriveSubsystem extends SubsystemBase {
     return (LMtrEnc.getSelectedSensorPosition() / 4096 * Math.PI * 6 * 10 * 2.54 / 100);
 
   }
+
+//De Pulsaciones a Distancia
+  public double DtncPlss (double DstncMTS) {
+    double pulses = (((((DstncMTS * 100) / 2.54) / 6) / Math.PI) * 4096);
+
+    return pulses;
+
+  }
+
+
 }
