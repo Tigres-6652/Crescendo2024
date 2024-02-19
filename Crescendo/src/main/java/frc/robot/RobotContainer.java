@@ -27,9 +27,11 @@ public class RobotContainer {
   private void configureBindings() {
   driveSubsystem.setDefaultCommand(new DriveCommand(driveSubsystem, () -> XboxController.getRawAxis(1), () -> XboxController.getRawAxis(4)));
 
-  new JoystickButton(XboxController, 2).toggleOnTrue(new ArmCommand(armSubsystem, () -> true, () -> false));
-  new JoystickButton(XboxController, 1).toggleOnTrue(new ArmCommand(armSubsystem, () -> false, () -> true));
- 
+  new JoystickButton(XboxController, 2).toggleOnTrue(new ArmCommand(armSubsystem, () -> true, () -> false, () -> false, () -> false, () -> false));
+  new JoystickButton(XboxController, 1).toggleOnTrue(new ArmCommand(armSubsystem, () -> false, () -> true, () -> false, () -> false, () -> false));
+  new JoystickButton(XboxController, 3).toggleOnTrue(new ArmCommand(armSubsystem, () -> false, () -> false, () -> true, () -> false, () -> false));
+  new JoystickButton(XboxController, 4).toggleOnTrue(new ArmCommand(armSubsystem, () -> false, () -> false, () -> false, () -> true, () -> false));
+  new JoystickButton(XboxController, 5).toggleOnTrue(new ArmCommand(armSubsystem, () -> false, () -> false, () -> false, () -> false, () -> true));
   }
 
   public Command getAutonomousCommand() {

@@ -56,6 +56,12 @@ public class ArmSubsystem extends SubsystemBase {
 
   }
 
+//grados en pulsos
+  public double ArmAxisPulses (double AxisPulses) {
+    double pulses = ((((((AxisPulses) / 360) * 0.006975) * 100)));
+    return pulses;
+  }
+
 //Bloqueo de Los motores
   public void stop (double speed){
     RgtMtrArm.set(0);
@@ -63,7 +69,7 @@ public class ArmSubsystem extends SubsystemBase {
   }
 
 //Limite y moviento libre de los motores
-  public void LmtMtr (Double velsup){
+  public void MtrMotionAndLimit (Double SptArm){
     double x = 0;
     double y = 0;
 
@@ -73,44 +79,44 @@ public class ArmSubsystem extends SubsystemBase {
     double limiteposterior = 0;
 
       if (BckLmt.get() && Axis_Degrees() > -y) {
-        RgtMtrArm.set(-velsup);
-        LftMtrArm.set(-velsup);
+        RgtMtrArm.set(-SptArm);
+        LftMtrArm.set(-SptArm);
 
-      } else if (!BckLmt.get() && velsup < 0.001) {
-        RgtMtrArm.set(-velsup);
-        LftMtrArm.set(-velsup);
+      } else if (!BckLmt.get() && SptArm < 0.001) {
+        RgtMtrArm.set(-SptArm);
+        LftMtrArm.set(-SptArm);
   
-      } else if (!BckLmt.get() && velsup > 0.001) {
+      } else if (!BckLmt.get() && SptArm > 0.001) {
         RgtMtrArm.set(0);
         LftMtrArm.set(0);
   
-      } else if (Axis_Degrees() < -x && velsup > 0.001 && BckLmt.get()) {
-        RgtMtrArm.set(-velsup);
-        LftMtrArm.set(-velsup);
+      } else if (Axis_Degrees() < -x && SptArm > 0.001 && BckLmt.get()) {
+        RgtMtrArm.set(-SptArm);
+        LftMtrArm.set(-SptArm);
 
-      } else if (Axis_Degrees() < -x && velsup < 0.001 && BckLmt.get()) {
+      } else if (Axis_Degrees() < -x && SptArm < 0.001 && BckLmt.get()) {
         RgtMtrArm.set(0);
         LftMtrArm.set(0);
   
       }  
 
       if (FrwrdLmt.get() && Axis_Degrees() > b) {
-        RgtMtrArm.set(-velsup);
-        LftMtrArm.set(-velsup);
+        RgtMtrArm.set(-SptArm);
+        LftMtrArm.set(-SptArm);
   
-      } else if (!FrwrdLmt.get() && velsup < gradosmaximos) {
-        RgtMtrArm.set(-velsup);
-        LftMtrArm.set(-velsup);
+      } else if (!FrwrdLmt.get() && SptArm < gradosmaximos) {
+        RgtMtrArm.set(-SptArm);
+        LftMtrArm.set(-SptArm);
 
-      } else if (!FrwrdLmt.get() && velsup > gradosmaximos) {
+      } else if (!FrwrdLmt.get() && SptArm > gradosmaximos) {
         RgtMtrArm.set(0);
         LftMtrArm.set(0);
   
-      } else if (Axis_Degrees() < a && velsup > gradosmaximos && FrwrdLmt.get()) {
-        RgtMtrArm.set(-velsup);
-        LftMtrArm.set(-velsup);
+      } else if (Axis_Degrees() < a && SptArm > gradosmaximos && FrwrdLmt.get()) {
+        RgtMtrArm.set(-SptArm);
+        LftMtrArm.set(-SptArm);
 
-      } else if (Axis_Degrees() < a && velsup < gradosmaximos && FrwrdLmt.get()) {
+      } else if (Axis_Degrees() < a && SptArm < gradosmaximos && FrwrdLmt.get()) {
         RgtMtrArm.set(0);
         LftMtrArm.set(0);
   
@@ -126,6 +132,22 @@ public class ArmSubsystem extends SubsystemBase {
         LftMtrArm.getEncoder().setPosition(0);
       }
       
+    }
+
+//Regreso A casita
+  public void RtrnHm (boolean status) {
+    if (status) {
+
+     if (!BckLmt.get()) {
+        RgtMtrArm.set(0);
+       LftMtrArm.set(0);
+
+     } else {
+       RgtMtrArm.set(-0.8);
+       LftMtrArm.set(-0.8);
+
+       }
+     }
     }
 
 //Controles para pruebas
@@ -183,5 +205,22 @@ public class ArmSubsystem extends SubsystemBase {
  * 0.006975
  * 
  */
-
+ /*⢠⡶⠛⠛⠢⣄⠀⠀⣀⣀⣀⣤⣀⣀⣀⢀⡤⠖⠛⠓⣆⠀⠀⠀
+⠀⠀⣾⠁⢠⡆⠀⣌⠿⠿⠛⣻⣿⣯⠙⣛⠻⠏⠀⣠⣤⡀⢸⠀⠀⠀
+⠀⠀⢹⣤⣻⠏⠚⢉⣠⣾⡵⠭⢻⠂⠠⣭⣓⠦⣀⠙⢻⣷⠟⠀⠀⠀
+⠀⠀⠈⢯⠤⡤⢞⡧⠈⡵⠃⡞⢻⡈⠳⡙⢦⡘⢧⡓⢄⢾⠀⠀⠀⠀
+⠀⠀⢰⠃⡾⢡⡏⡧⢾⢄⠸⠡⠛⠋⠒⠛⡠⣽⢆⢳⡘⡎⢢⠀⠀⠀
+⠀⢠⡇⢸⡇⣿⢰⢻⣶⣾⡷⡄⠀⠀⠀⣾⣟⣿⡹⠋⡇⣧⠀⢇⠀⠀
+⠀⢸⠀⢸⡇⢻⡸⢦⣙⡊⣿⠁⠀⠀⠀⢻⡉⠉⠀⠀⡇⣿⠀⢸⣷⣄
+⠀⡾⠀⢸⣧⠘⡟⠂⠲⣤⡿⠀⠀⠀⠀⠈⠓⣜⣶⢶⠁⣿⠁⢸⣿⡏
+⢀⣿⡀⠈⢻⣄⢸⡌⢷⡎⠀⠀⠀⠀⠀⠀⠆⠈⣯⣄⣤⡿⠀⢸⠁⢀
+⠈⠘⣷⡀⠀⢿⣷⣿⣟⣻⡤⡷⣶⡒⡶⠞⣠⣾⣿⡶⠿⠋⢐⠆⠀⣼
+⠀⠀⠹⣿⡇⠀⡎⡏⡿⣯⢽⡟⠈⣻⡁⠠⢿⣿⠟⠁⢀⢀⡾⠀⢰⡟
+⠀⠀⠀⣿⣧⣀⢀⣿⢠⠈⡻⠓⠉⠉⠉⠒⢾⠙⡄⢱⣤⡿⠄⣠⡿⠃
+⠀⠀⢀⡸⡛⠿⣧⣉⡋⠛⠧⢄⣀⣀⡀⣠⠾⢯⠴⠿⠏⣠⣾⣿⠃⠀
+⠀⠀⠈⢳⡕⣄⠀⠙⠻⢶⣤⡀⠉⠙⠻⡁⠀⠀⠀⢀⡼⣻⣿⠃⠀⠀
+⠀⠀⠀⠀⠙⣮⠑⠦⣀⠀⠉⠻⢶⣄⠀⠈⠦⡀⠖⠉⢰⣿⠋⠀⠀⠀
+⠀⠀⠀⠀⠀⠈⠳⣤⣀⠉⠓⠄⠀⠙⢿⣤⡀⠀⠀⣠⡿⠁⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠈⠛⠷⣶⣤⡀⠀⠈⠻⡛⠂⠀⣉⠀⠀⠀⠀⠀⠀ 
+*/
 }
