@@ -4,14 +4,34 @@
 
 package frc.robot.Subsystems;
 
+import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
+
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class IntakeSubsystem extends SubsystemBase {
-  /** Creates a new IntakeSubsystem. */
+
+//Motor del intake
+ WPI_VictorSPX MtrIntk = new WPI_VictorSPX(9);
+
+//Limit swich del intake 
+ DigitalInput LmtIntk = new DigitalInput(9);
+
+//metodo para contorlar el motor del intake
+  public void MotorIntake (boolean boton1){
+    
+    if (boton1) {
+      MtrIntk.set(0.5);
+
+    }else{
+      MtrIntk.set(0);
+
+    }
+  }
+
   public IntakeSubsystem() {}
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
   }
 }

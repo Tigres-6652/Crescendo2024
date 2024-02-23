@@ -10,13 +10,16 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Command.ArmCommand;
 import frc.robot.Command.DriveCommand;
+import frc.robot.Command.IntakeCommand;
 import frc.robot.Subsystems.ArmSubsystem;
 import frc.robot.Subsystems.DriveSubsystem;
+import frc.robot.Subsystems.IntakeSubsystem;
 
 public class RobotContainer {
 
   private final DriveSubsystem driveSubsystem = new DriveSubsystem();
   private final ArmSubsystem armSubsystem = new ArmSubsystem();
+  private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
 
   private final Joystick XboxController = new Joystick(0);
 
@@ -32,6 +35,8 @@ public class RobotContainer {
   new JoystickButton(XboxController, 3).toggleOnTrue(new ArmCommand(armSubsystem, () -> false, () -> false, () -> true, () -> false, () -> false));
   new JoystickButton(XboxController, 4).toggleOnTrue(new ArmCommand(armSubsystem, () -> false, () -> false, () -> false, () -> true, () -> false));
   new JoystickButton(XboxController, 5).toggleOnTrue(new ArmCommand(armSubsystem, () -> false, () -> false, () -> false, () -> false, () -> true));
+
+   new JoystickButton(XboxController, 6).toggleOnTrue(new IntakeCommand(intakeSubsystem, () -> true));
   }
 
   public Command getAutonomousCommand() {

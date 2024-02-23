@@ -41,7 +41,7 @@ Supplier<Boolean> PaAbajo, Supplier<Boolean> PaEnMedio, Supplier<Boolean> RtrnHm
       armSubsystem.RtrnHm(RtrnHm.get());
 
     }else{
-      armSubsystem.MtrMotionAndLimit(0);
+      armSubsystem.ArmAxisPulses(0);
     }
   }
 

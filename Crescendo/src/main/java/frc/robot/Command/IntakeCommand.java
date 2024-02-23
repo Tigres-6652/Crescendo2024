@@ -4,27 +4,35 @@
 
 package frc.robot.Command;
 
+import java.util.function.Supplier;
+
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Subsystems.IntakeSubsystem;
 
 public class IntakeCommand extends Command {
-  /** Creates a new IntakeCommand. */
-  public IntakeCommand() {
-    // Use addRequirements() here to declare subsystem dependencies.
+
+  private final IntakeSubsystem intakeSubsystem;
+  private Supplier<Boolean> FunSpdIntk;
+
+  public IntakeCommand(IntakeSubsystem intakeSubsystem, Supplier<Boolean> FunSpdIntk) {
+    this.FunSpdIntk = FunSpdIntk;
+    this.intakeSubsystem = intakeSubsystem;
+
+    addRequirements(intakeSubsystem);
   }
 
-  // Called when the command is initially scheduled.
   @Override
   public void initialize() {}
 
-  // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    intakeSubsystem.MotorIntake(FunSpdIntk.get());
 
-  // Called once the command ends or is interrupted.
+  }
+
   @Override
   public void end(boolean interrupted) {}
 
-  // Returns true when the command should end.
   @Override
   public boolean isFinished() {
     return false;
