@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class DriveSubsystem extends SubsystemBase {
 //Declaracione de los motores derecchos
-  static WPI_TalonSRX RMtrEnc = new WPI_TalonSRX(1);
+  WPI_TalonSRX RMtrEnc = new WPI_TalonSRX(1);
   WPI_TalonSRX RMtrFllw = new WPI_TalonSRX(2);
 
 //Declaracion de los motores izquierdos
@@ -34,15 +34,18 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
 //Metodo para invertir los motores izquierdos
-  public static void Inverte () {
+  public void Inverte () {
     RMtrEnc.setInverted(false);
+    RMtrFllw.setInverted(false);
+
     LMtrEnc.setInverted(true);
+    LMtrFllw.setInverted(true);
   }
 
 //Metodo para seguir los motores principales
-  public static void FollowMotor (){
-    RMtrEnc.follow(RMtrEnc);
-    LMtrEnc.follow(LMtrEnc);
+  public void FollowMotor (){
+    RMtrFllw.follow(RMtrEnc);
+    LMtrFllw.follow(LMtrEnc);
   }
 
 //Encoder Derecho

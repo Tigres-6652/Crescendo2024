@@ -19,8 +19,8 @@ public class DriveCommand extends Command {
 
   @Override
   public void initialize() {
-    DriveSubsystem.Inverte();
-    DriveSubsystem.FollowMotor();
+    driveSubsystem.Inverte();
+    driveSubsystem.FollowMotor();
   }
 
   @Override
