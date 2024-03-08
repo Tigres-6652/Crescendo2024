@@ -1,9 +1,3 @@
 package frc.robot;
 
-
-
-public class Constants {
-    
-    public static final class KPIDArmm {
-    }
-}
+public class Constants {}
