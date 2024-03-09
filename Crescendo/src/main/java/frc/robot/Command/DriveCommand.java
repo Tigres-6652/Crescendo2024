@@ -21,14 +21,15 @@ public class DriveCommand extends Command {
 //Inciliacion de Metodos del Subsistema (init)
   @Override
   public void initialize() {
-    DriveSubsystem.Inverte();
-    DriveSubsystem.FollowMotor();
+    driveSubsystem.Reset();
+    
   }
 
 //Ejecucion de los metodos del subsistema (periodic)
   @Override
   public void execute() {
     driveSubsystem.Arcade_Drive(FunSpd.get(), FunGrr.get());
+
   }
 
 //Finalisacion de los metodos del Subsistema
