@@ -15,7 +15,6 @@ public class ArmCommand extends Command {
     this.GoodMovend = FunArm;
     this.armSubsystem = armSubsystem;
     addRequirements(armSubsystem);
-
   } 
 
 //Inciliacion de Metodos del Subsistema (init)
@@ -26,14 +25,12 @@ public class ArmCommand extends Command {
   @Override
   public void execute() {
     armSubsystem.MtrInvNFllw(GoodMovend.get());
-
   }
 
 //Finalisacion de los metodos del Subsistema
   @Override
   public void end(boolean interrupted) {
     armSubsystem.MtrInvNFllw(0);
-
   }
 
   @Override

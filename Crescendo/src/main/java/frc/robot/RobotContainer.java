@@ -21,8 +21,7 @@ public class RobotContainer {
   private final Joystick Ctrl = new Joystick(0);
 
   public RobotContainer() {
-    configureBindings();
-
+  configureBindings();
   }
 
   private void configureBindings() {
@@ -37,11 +36,9 @@ public class RobotContainer {
   new JoystickButton(Ctrl, 2).toggleOnTrue(new IntakeCommand(intakeSubsystem, () -> false, () -> true,  () -> false,  () -> false));
   new JoystickButton(Ctrl, 3).toggleOnTrue(new IntakeCommand(intakeSubsystem, () -> false, () -> false,  () -> true,  () -> false));
   new JoystickButton(Ctrl, 4).toggleOnTrue(new IntakeCommand(intakeSubsystem, () -> false, () -> false,  () -> false,  () -> true));
-
   }
 
   public Command getAutonomousCommand() {
     return Commands.print("No autonomous command configured");
-
   }
 }

@@ -11,7 +11,6 @@ public class IntakeSubsystem extends SubsystemBase {
 //Velocidad del Motor del intake
   public void MtrItkVel(double IktVel) {
     MtrIntk.set(IktVel);
-    
   }
 
   public IntakeSubsystem() {}

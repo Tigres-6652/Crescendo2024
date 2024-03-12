@@ -22,20 +22,19 @@ public class DriveCommand extends Command {
   @Override
   public void initialize() {
     driveSubsystem.Reset();
-    
   }
 
 //Ejecucion de los metodos del subsistema (periodic)
   @Override
   public void execute() {
     driveSubsystem.Arcade_Drive(FunSpd.get(), FunGrr.get());
-
   }
 
 //Finalisacion de los metodos del Subsistema
   @Override
   public void end(boolean interrupted) {
     driveSubsystem.Arcade_Drive(0, 0);
+    driveSubsystem.Reset();
   }
 
   @Override

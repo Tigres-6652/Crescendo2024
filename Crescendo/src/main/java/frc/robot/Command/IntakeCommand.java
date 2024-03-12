@@ -42,7 +42,6 @@ public class IntakeCommand extends Command {
 
     } else {
       intakeSubsystem.MtrItkVel(0);
-
     }
   }
 

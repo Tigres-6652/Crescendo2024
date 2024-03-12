@@ -14,7 +14,6 @@ public class ArmSubsystem extends SubsystemBase {
   public void MtrInvNFllw(double SpdArm) {
     RgtMtrArm.set(SpdArm);
     LftMtrArm.set(-SpdArm);
-
   }
   
   public ArmSubsystem() {}

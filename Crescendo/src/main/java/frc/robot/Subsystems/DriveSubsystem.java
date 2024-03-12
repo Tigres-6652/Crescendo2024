@@ -2,12 +2,20 @@ package frc.robot.Subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.util.ReplanningConfig;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
+import edu.wpi.first.math.proto.Kinematics;
+import edu.wpi.first.units.Units;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -25,11 +33,12 @@ public class DriveSubsystem extends SubsystemBase {
   DifferentialDrive Chasis = new DifferentialDrive(LMtrEnc, RMtrEnc);
 
 //NAVX y Odometria 
-//Declaracion de las navx
   AHRS Navx = new AHRS(SPI.Port.kMXP);
   DifferentialDriveOdometry m_odometry;
 
-//=================================================================================================================//
+//=================================================================================================================\\
+
+//Configuracion de los motores y navx
 //Seguimiento e inversion de los motores e inicialisacion de la odometria
   public DriveSubsystem() {
     RMtrEnc.setInverted(false);
@@ -39,55 +48,64 @@ public class DriveSubsystem extends SubsystemBase {
     LMtrFllw.follow(LMtrEnc);
   
     m_odometry = new DifferentialDriveOdometry(getRotation2d(), LftEnc(), RgtEnc());
-
   }
 
 //Metodo para controla el chasis
   public void Arcade_Drive(double Speed, double Giro){
     Chasis.arcadeDrive(Speed, Giro);
 
-    SmartDashboard.putNumber("Distancia encoder derecho", RgtEnc());
-    SmartDashboard.putNumber("Distancia encoder izquierdo", LftEnc());
-
-    SmartDashboard.putNumber("angle", Navx.getAngle());
   }
 
+  DifferentialDriveKinematics cinematics = new DifferentialDriveKinematics(27.0 * 2.54 / 100);    
+
+//=================================================================================================================\\
+
+//Metodos para los encoders 
 //Encoders
+  public double Encoders() {
+    return (RgtEnc() + LftEnc() / 2);
+  }
+
 //Encoder derecho
   public double RgtEnc() {
     return (RMtrEnc.getSelectedSensorPosition() / 4096 * Math.PI * 6 * 2.54) / 100;
-  
   }
 
 //Encoder Izquierdo
   public double LftEnc() {
     return (LMtrEnc.getSelectedSensorPosition() / 4096 * Math.PI * 6 * 2.54) / 100;
-
   }
+
 //Reseteo de los encoders
   public void resetEncoders() {
     RMtrEnc.setSelectedSensorPosition(0);
     LMtrEnc.setSelectedSensorPosition(0);
-
   }
+
+//SmartDashboard de los enocders
+  public void SDEncders () {
+    SmartDashboard.putNumber("Distancia encoder derecho", RgtEnc());
+    SmartDashboard.putNumber("Distancia encoder izquierdo", LftEnc());
+    
+    SmartDashboard.putNumber("angle", Navx.getAngle());
+  }
+  
+//=================================================================================================================\\
 
 //Configuraciones Navx
 //Plano 2D
   public Rotation2d getRotation2d() {
     return Navx.getRotation2d();
-
   }
 
 //Eje x?
   public double getTurnRate() {
     return Navx.getRate();
-
   }
 
 //Navx pero en grados  xd
   public double getHeading() {
     return Navx.getRotation2d().getDegrees();
-
   }
 
 //Posicion en metros
@@ -99,14 +117,14 @@ public class DriveSubsystem extends SubsystemBase {
   public void resetOdometry(Pose2d pose) {
     resetEncoders();
     m_odometry.resetPosition(getRotation2d(), LftEnc(), RgtEnc(), pose);
-
   }
 
 //Resetiado de la navx
   public void zeroHeading() {
     Navx.reset();
-
   }
+
+//=================================================================================================================\\
 
 //Reseteo de los sensores
   public void Reset() {
@@ -114,7 +132,37 @@ public class DriveSubsystem extends SubsystemBase {
     resetEncoders();
   }
 
+//=================================================================================================================\\
+
+  public void pathplanner() {
+    AutoBuilder.configureRamsete(
+      this::getPose,
+      this::resetOdometry,
+      this::speeds,
+      this::,
+      new ReplanningConfig()
+
+      () -> {
+
+        var alliance = DriverStation.getAlliance();
+        if (alliance.isPresent()) {
+          return alliance.get() == DriverStation.Alliance.Red;
+        }
+      }
+    );
+  }  
   @Override
   public void periodic() {}
 
+  ChassisSpeeds speeds = new ChassisSpeeds(3.0, -2.0, Math.PI);
+
+  private ChassisSpeeds speeds() {
+    return  speeds = ChassisSpeeds.fromFieldRelativeSpeeds(2.0, 2.0, Math.PI / 2.0, getRotation2d());
+    
+  }
+
+  private ChassisSpeeds XD() {
+    return  speeds = ChassisSpeeds.fromFieldRelativeSpeeds(2.0, 2.0, Math.PI / 2.0, getRotation2d());
+    
+  }  
 }
