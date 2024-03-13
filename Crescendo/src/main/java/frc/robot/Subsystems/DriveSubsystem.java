@@ -2,10 +2,16 @@ package frc.robot.Subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.util.ReplanningConfig;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -27,7 +33,7 @@ public class DriveSubsystem extends SubsystemBase {
 //NAVX y Odometria 
   AHRS Navx = new AHRS(SPI.Port.kMXP);
   DifferentialDriveOdometry m_odometry;
-
+  DifferentialDriveKinematics kinematics;
 //=================================================================================================================\\
 
 //Configuracion de los motores y navx
@@ -40,12 +46,53 @@ public class DriveSubsystem extends SubsystemBase {
     LMtrFllw.follow(LMtrEnc);
   
     m_odometry = new DifferentialDriveOdometry(getRotation2d(), LftEnc(), RgtEnc());
+
+    AutoBuilder.configureRamsete(
+      this::getPose,
+      this::resetOdometry,
+      this::getSpeeds,
+      this::setChassisSpeeds,
+      new ReplanningConfig(),
+      () -> {
+
+      var alliance = DriverStation.getAlliance();
+        if (alliance.isPresent()) {
+        return alliance.get() == DriverStation.Alliance.Red;
+      }
+      return false;
+    },
+    this
+  );
+}
+
+  public void setChassisSpeeds(ChassisSpeeds speed) {
+    double linearSpeed = speed.vxMetersPerSecond;
+    double rotSpeed = speed.omegaRadiansPerSecond;
+    
+    Arcade_Drive(linearSpeed / 3.4, rotSpeed);
   }
+
+  public ChassisSpeeds getSpeeds(){
+      DifferentialDriveWheelSpeeds wheelSpeeds  =  new DifferentialDriveWheelSpeeds(LftVel(), RgtVel());
+      return kinematics.toChassisSpeeds(wheelSpeeds);
+    }
+
+    //Reseteo de la posicion
+  public void resetOdometry(Pose2d pose) {
+    resetEncoders();
+    m_odometry.resetPosition(getRotation2d(), LftEnc(), RgtEnc(), pose);
+  }
+  
+    //Posicion en metros
+  public Pose2d getPose() {
+    return m_odometry.getPoseMeters();
+  }
+
+//===============================================================================================
 
   @Override
   public void periodic() {
-    m_odometry.update(Navx.getRotation2d(), LftEnc(), RgtEnc());
-    
+    m_odometry.update(Navx.getRotation2d(), LftEnc(), RgtEnc()); 
   }
 
 //Metodo para controla el chasis
@@ -68,6 +115,16 @@ public class DriveSubsystem extends SubsystemBase {
 //Encoder Izquierdo
   public double LftEnc() {
     return (LMtrEnc.getSelectedSensorPosition() / 4096 * Math.PI * 6 * 2.54) / 100;
+  }
+
+  //Encoder derecho
+  public double RgtVel() {
+    return (RMtrEnc.getSelectedSensorVelocity() / 4096 * Math.PI * 6 * 2.54) / 100;
+  }
+
+//Encoder Izquierdo
+  public double LftVel() {
+    return (LMtrEnc.getSelectedSensorVelocity() / 4096 * Math.PI * 6 * 2.54) / 100;
   }
 
 //Reseteo de los encoders
@@ -100,16 +157,7 @@ public class DriveSubsystem extends SubsystemBase {
     return Navx.getRotation2d().getDegrees();
   }
 
-//Posicion en metros
-  public Pose2d getPose() {
-    return m_odometry.getPoseMeters();
-  }
 
-//Reseteo de la posicion
-  public void resetOdometry(Pose2d pose) {
-    resetEncoders();
-    m_odometry.resetPosition(getRotation2d(), LftEnc(), RgtEnc(), pose);
-  }
 
 //Resetiado de la navx
   public void zeroHeading() {
@@ -135,30 +183,5 @@ public class DriveSubsystem extends SubsystemBase {
   public void setMaxOutput(double maxOutput) {
     Chasis.setMaxOutput(maxOutput);
   }
-/* 
-  public void pathplanner() {
-    AutoBuilder.configureRamsete(
-      this::getPose,
-      this::resetOdometry,
-      this::,
-      this::,
-      new ReplanningConfig()
 
-      () -> {
-
-        var alliance = DriverStation.getAlliance();
-        if (alliance.isPresent()) {
-          return alliance.get() == DriverStation.Alliance.Red;
-        }
-      }
-    );
-  }  
-
-    ChassisSpeeds speeds = new ChassisSpeeds(3.0, -2.0, Math.PI);
-
-  private ChassisSpeeds speeds() {
-    return  speeds = ChassisSpeeds.fromFieldRelativeSpeeds(2.0, 2.0, Math.PI / 2.0, getRotation2d());
-    
-  }
-*/
 }
