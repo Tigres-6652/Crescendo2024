@@ -2,20 +2,12 @@ package frc.robot.Subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
-import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.util.ReplanningConfig;
-
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
-import edu.wpi.first.math.proto.Kinematics;
-import edu.wpi.first.units.Units;
-import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -50,15 +42,17 @@ public class DriveSubsystem extends SubsystemBase {
     m_odometry = new DifferentialDriveOdometry(getRotation2d(), LftEnc(), RgtEnc());
   }
 
+  @Override
+  public void periodic() {
+    m_odometry.update(Navx.getRotation2d(), LftEnc(), RgtEnc());
+    
+  }
+
 //Metodo para controla el chasis
   public void Arcade_Drive(double Speed, double Giro){
     Chasis.arcadeDrive(Speed, Giro);
 
   }
-
-  DifferentialDriveKinematics cinematics = new DifferentialDriveKinematics(27.0 * 2.54 / 100);    
-
-//=================================================================================================================\\
 
 //Metodos para los encoders 
 //Encoders
@@ -89,8 +83,6 @@ public class DriveSubsystem extends SubsystemBase {
     
     SmartDashboard.putNumber("angle", Navx.getAngle());
   }
-  
-//=================================================================================================================\\
 
 //Configuraciones Navx
 //Plano 2D
@@ -124,21 +116,31 @@ public class DriveSubsystem extends SubsystemBase {
     Navx.reset();
   }
 
-//=================================================================================================================\\
-
 //Reseteo de los sensores
   public void Reset() {
     zeroHeading();
     resetEncoders();
   }
 
-//=================================================================================================================\\
+  public DifferentialDriveWheelSpeeds getWheelSpeeds() {
+    return new DifferentialDriveWheelSpeeds(LftEnc(), RgtEnc());
+  }
 
+  public void tankDriveVolts(double leftVolts, double rightVolts) {
+    LMtrEnc.setVoltage(leftVolts);
+    RMtrEnc.setVoltage(rightVolts);
+    Chasis.feed();
+  }
+
+  public void setMaxOutput(double maxOutput) {
+    Chasis.setMaxOutput(maxOutput);
+  }
+/* 
   public void pathplanner() {
     AutoBuilder.configureRamsete(
       this::getPose,
       this::resetOdometry,
-      this::speeds,
+      this::,
       this::,
       new ReplanningConfig()
 
@@ -151,18 +153,12 @@ public class DriveSubsystem extends SubsystemBase {
       }
     );
   }  
-  @Override
-  public void periodic() {}
 
-  ChassisSpeeds speeds = new ChassisSpeeds(3.0, -2.0, Math.PI);
+    ChassisSpeeds speeds = new ChassisSpeeds(3.0, -2.0, Math.PI);
 
   private ChassisSpeeds speeds() {
     return  speeds = ChassisSpeeds.fromFieldRelativeSpeeds(2.0, 2.0, Math.PI / 2.0, getRotation2d());
     
   }
-
-  private ChassisSpeeds XD() {
-    return  speeds = ChassisSpeeds.fromFieldRelativeSpeeds(2.0, 2.0, Math.PI / 2.0, getRotation2d());
-    
-  }  
+*/
 }
