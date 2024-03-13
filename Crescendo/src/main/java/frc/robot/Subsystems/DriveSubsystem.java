@@ -5,8 +5,6 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.util.ReplanningConfig;
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.REVLibError;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -17,7 +15,6 @@ import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;import edu.wpi
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -41,6 +38,18 @@ public class DriveSubsystem extends SubsystemBase {
 
 //=================================================================================================================\\
 
+
+  @Override
+  public void periodic() {
+
+SDEncders();
+
+
+m_odometry.update(getRotation2d(), LftEncPos(), RgtEncPos());
+Chasis.feed();
+  }
+
+
 //Configuracion de los motores y navx
 //Seguimiento e inversion de los motores e inicialisacion de la odometria
   public DriveSubsystem() {
@@ -50,7 +59,7 @@ public class DriveSubsystem extends SubsystemBase {
     RMtrFllw.follow(RMtrEnc);
     LMtrFllw.follow(LMtrEnc);
   
-    m_odometry = new DifferentialDriveOdometry(getRotation2d(), LftEnc(), RgtEnc());
+    m_odometry = new DifferentialDriveOdometry(getRotation2d(), LftEncPos(), RgtEncPos());
 
 
     AutoBuilder.configureRamsete(
@@ -103,19 +112,28 @@ public void configtalons(){
 
   }
 
-  DifferentialDriveKinematics cinematics = new DifferentialDriveKinematics(27.0 * 2.54 / 100);    
-
 //=================================================================================================================\\
 
 
 //Encoder derecho
-  public double RgtEnc() {
+  public double RgtEncPos() {
     return (RMtrEnc.getSelectedSensorPosition() / 4096 * Math.PI * 6 * 2.54) / 100;
   }
 
 //Encoder Izquierdo
-  public double LftEnc() {
+  public double LftEncPos() {
     return (LMtrEnc.getSelectedSensorPosition() / 4096 * Math.PI * 6 * 2.54) / 100;
+  }
+  public double LftEncVel() {
+    return (LMtrEnc.getSelectedSensorVelocity() / 4096 * Math.PI * 6 * 2.54) / 100;
+  }
+  public double RgtEncvel() {
+    return (RMtrEnc.getSelectedSensorVelocity() / 4096 * Math.PI * 6 * 2.54) / 100;
+  }
+
+  public double velprom(){
+
+    return (LftEncVel()+RgtEncvel())/2;
   }
 
 //Reseteo de los encoders
@@ -126,8 +144,9 @@ public void configtalons(){
 
 //SmartDashboard de los enocders
   public void SDEncders () {
-    SmartDashboard.putNumber("Distancia encoder derecho", RgtEnc());
-    SmartDashboard.putNumber("Distancia encoder izquierdo", LftEnc());
+    SmartDashboard.putNumber("Distancia encoder derecho", RgtEncPos());
+    SmartDashboard.putNumber("Distancia encoder izquierdo", LftEncPos());
+    SmartDashboard.putNumber("navx",Navx.getAngle());
   
 
     
@@ -150,19 +169,24 @@ public void configtalons(){
 
 //Reseteo de la posicion
   public void resetOdometry(Pose2d pose) {
-    m_odometry.resetPosition(getRotation2d(), LftEnc(), RgtEnc(), pose);
+    Reset();
+    m_odometry.resetPosition(getRotation2d(), LftEncPos(), RgtEncPos(), pose);
   }
 
   public ChassisSpeeds getWheelSpeeds(){
-    DifferentialDriveWheelSpeeds wheelSpeeds =  new DifferentialDriveWheelSpeeds(LftEnc(),RgtEnc());
-    return kinematics.toChassisSpeeds(wheelSpeeds);
+    //DifferentialDriveWheelSpeeds wheelSpeeds =  new DifferentialDriveWheelSpeeds(LftEncVel(),RgtEncvel());
+    //return kinematics.toChassisSpeeds(wheelSpeeds);
+
+    return new ChassisSpeeds(velprom(), 0,Math.toRadians( Navx.getVelocityZ()));
 }
 
     public void driveVelocity(ChassisSpeeds speed){
-        DifferentialDriveWheelSpeeds wheelSpeeds = kinematics.toWheelSpeeds(speed);
-        SmartDashboard.putNumber("LeftVelocitySetpoint", wheelSpeeds.leftMetersPerSecond);
-        SmartDashboard.putNumber("RightVelocitySetpoint", wheelSpeeds.rightMetersPerSecond);
 
+      
+      double linearspeed = speed.vxMetersPerSecond;
+      double rotSpeed = speed.omegaRadiansPerSecond;
+
+      Arcade_Drive(linearspeed, rotSpeed);
         
     }
 //Resetiado de la navx
@@ -180,12 +204,7 @@ public void configtalons(){
 
 //=================================================================================================================\\
 
-  @Override
-  public void periodic() {
 
-SDEncders();
-
-  }
 
 
 

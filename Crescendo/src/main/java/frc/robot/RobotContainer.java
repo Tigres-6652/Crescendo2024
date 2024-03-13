@@ -1,7 +1,17 @@
 package frc.robot;
 
-import com.pathplanner.lib.auto.AutoBuilder;
+import java.util.List;
 
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.commands.PathPlannerAuto;
+import com.pathplanner.lib.path.GoalEndState;
+import com.pathplanner.lib.path.PathConstraints;
+import com.pathplanner.lib.path.PathPlannerPath;
+
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -31,13 +41,26 @@ public class RobotContainer {
   
   public RobotContainer() {
 
-    autoChooser = AutoBuilder.buildAutoChooser();
+    autoChooser = AutoBuilder.buildAutoChooser("AutoTest");
     SmartDashboard.putData("AutoTest", autoChooser);
 
   configureBindings();
+
+
+
+
+
+
   }
 
   private void configureBindings() {
+
+    SmartDashboard.putData("Example Auto", new PathPlannerAuto("AutoTest"));
+
+    
+
+    
+
 //Control del robot
   driveSubsystem.setDefaultCommand(new DriveCommand(driveSubsystem, () -> Ctrl.getRawAxis(1), () -> Ctrl.getRawAxis(4)));
 
@@ -52,7 +75,7 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    return autoChooser.getSelected();
+    return new PathPlannerAuto("AutoTest");
 
   }
 }
