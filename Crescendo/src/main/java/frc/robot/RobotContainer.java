@@ -30,7 +30,7 @@ public class RobotContainer {
 
      //building the auto chooser for pathplanner
     autoChooser = AutoBuilder.buildAutoChooser();
-    SmartDashboard.putData("Auto Chooser", autoChooser);
+    SmartDashboard.putData("si", autoChooser);
   }
 
   private void configureBindings() {

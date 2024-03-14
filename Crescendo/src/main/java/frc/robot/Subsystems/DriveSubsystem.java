@@ -11,6 +11,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -33,7 +34,7 @@ public class DriveSubsystem extends SubsystemBase {
 //NAVX y Odometria 
   AHRS Navx = new AHRS(SPI.Port.kMXP);
   DifferentialDriveOdometry m_odometry;
-  DifferentialDriveKinematics kinematics;
+  DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(Units.inchesToMeters(20.5));
 //=================================================================================================================\\
 
 //Configuracion de los motores y navx
@@ -183,5 +184,4 @@ public class DriveSubsystem extends SubsystemBase {
   public void setMaxOutput(double maxOutput) {
     Chasis.setMaxOutput(maxOutput);
   }
-
 }
