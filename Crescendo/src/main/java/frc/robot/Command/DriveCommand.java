@@ -21,7 +21,14 @@ public class DriveCommand extends Command {
 //Inciliacion de Metodos del Subsistema (init)
   @Override
   public void initialize() {
-    driveSubsystem.Reset();
+    driveSubsystem.configtalon();
+    driveSubsystem.LftEnc();
+    driveSubsystem.RgtEnc();
+
+    driveSubsystem.LftVel();
+    driveSubsystem.RgtVel();
+
+    driveSubsystem.getRotation2d();
   }
 
 //Ejecucion de los metodos del subsistema (periodic)

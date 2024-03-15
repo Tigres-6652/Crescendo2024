@@ -38,7 +38,7 @@ public class RobotContainer {
   driveSubsystem.setDefaultCommand(new DriveCommand(driveSubsystem, () -> Ctrl.getRawAxis(1), () -> Ctrl.getRawAxis(4)));
 
 //Control del brazo (movimiento libre)
-  armSubsystem.setDefaultCommand(new ArmCommand(armSubsystem, () -> Ctrl.getRawAxis(1)));
+ // armSubsystem.setDefaultCommand(new ArmCommand(armSubsystem, () -> Ctrl.getRawAxis(1)));
 
 //Control del Intake (seleccion de velocidades)
   new JoystickButton(Ctrl, 1).toggleOnTrue(new IntakeCommand(intakeSubsystem, () -> true, () -> false,  () -> false,  () -> false));

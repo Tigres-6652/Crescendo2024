@@ -1,5 +1,6 @@
 package frc.robot.Subsystems;
 
+import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -25,8 +26,8 @@ public class DriveSubsystem extends SubsystemBase {
   static WPI_TalonSRX RMtrFllw = new WPI_TalonSRX(2);
 
 //Declaracion de los motores izquierdos
-  static WPI_TalonSRX LMtrEnc = new WPI_TalonSRX(4);
-  static WPI_TalonSRX LMtrFllw = new WPI_TalonSRX(3);
+  static WPI_TalonSRX LMtrEnc = new WPI_TalonSRX(3);
+  static WPI_TalonSRX LMtrFllw = new WPI_TalonSRX(4);
 
 //Declaracion para el control diferencial de los motores que estan en el chasis
   DifferentialDrive Chasis = new DifferentialDrive(LMtrEnc, RMtrEnc);
@@ -40,12 +41,8 @@ public class DriveSubsystem extends SubsystemBase {
 //Configuracion de los motores y navx
 //Seguimiento e inversion de los motores e inicialisacion de la odometria
   public DriveSubsystem() {
-    RMtrEnc.setInverted(false);
-    LMtrEnc.setInverted(true);
 
-    RMtrFllw.follow(RMtrEnc);
-    LMtrFllw.follow(LMtrEnc);
-  
+    
     m_odometry = new DifferentialDriveOdometry(getRotation2d(), LftEnc(), RgtEnc());
 
     AutoBuilder.configureRamsete(
@@ -70,7 +67,7 @@ public class DriveSubsystem extends SubsystemBase {
     double linearSpeed = speed.vxMetersPerSecond;
     double rotSpeed = speed.omegaRadiansPerSecond;
     
-    Arcade_Drive(linearSpeed / 3.4, rotSpeed);
+    Arcade_Drive(linearSpeed, rotSpeed);
   }
 
   public ChassisSpeeds getSpeeds(){
@@ -90,10 +87,50 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
 //===============================================================================================
+  public void configtalon() {
+    RMtrEnc.configFactoryDefault();
+    RMtrFllw.configFactoryDefault();
+    LMtrEnc.configFactoryDefault();
+    LMtrFllw.configFactoryDefault();
+
+    RMtrFllw.follow(RMtrEnc);
+    LMtrFllw.follow(LMtrEnc);
+
+    RMtrEnc.setInverted(true);
+    LMtrEnc.setInverted(false);
+
+    RMtrEnc.setInverted(InvertType.FollowMaster);
+    LMtrEnc.setInverted(InvertType.FollowMaster);
+
+    RMtrEnc.setSensorPhase(true);
+    LMtrEnc.setSensorPhase(true);
+
+    RMtrEnc.configNominalOutputForward(0, 30);
+    RMtrEnc.configNominalOutputReverse(0, 30);
+    RMtrEnc.configPeakOutputForward(1, 30);
+    RMtrEnc.configPeakOutputReverse(-1, 30);
+
+    RMtrEnc.config_kF(0, 0, 30);
+    RMtrEnc.config_kP(0, 0, 30);
+    RMtrEnc.config_kI(0, 0, 30);
+    RMtrEnc.config_kD(0, 0, 30);
+
+    LMtrEnc.configNominalOutputForward(0, 30);
+    LMtrEnc.configNominalOutputReverse(0, 30);
+    LMtrEnc.configPeakOutputForward(1, 30);
+    LMtrEnc.configPeakOutputReverse(-1, 30);
+
+    LMtrEnc.config_kF(0, 0, 30);
+    LMtrEnc.config_kP(0, 0, 30);
+    LMtrEnc.config_kI(0, 0, 30);
+    LMtrEnc.config_kD(0, 0, 30);
+  }
+
 
   @Override
   public void periodic() {
     m_odometry.update(Navx.getRotation2d(), LftEnc(), RgtEnc()); 
+    Chasis.feed();
   }
 
 //Metodo para controla el chasis
