@@ -21,30 +21,31 @@ public class RobotContainer {
   private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
 
 //declaracion de los controles
-  private final Joystick Ctrl = new Joystick(0);
+  private final Joystick FirstD = new Joystick(0);
+  private final Joystick SecondD = new Joystick(1);
 
   private final SendableChooser<Command> autoChooser;
 
   public RobotContainer() {
   configureBindings();
 
-     //building the auto chooser for pathplanner
-    autoChooser = AutoBuilder.buildAutoChooser();
-    SmartDashboard.putData("si", autoChooser);
+//building the auto chooser for pathplanner
+  autoChooser = AutoBuilder.buildAutoChooser();
+  SmartDashboard.putData("AutoChoorser", autoChooser);
   }
 
   private void configureBindings() {
 //Control del robot
-  driveSubsystem.setDefaultCommand(new DriveCommand(driveSubsystem, () -> Ctrl.getRawAxis(1), () -> Ctrl.getRawAxis(4)));
+  driveSubsystem.setDefaultCommand(new DriveCommand(driveSubsystem, () -> FirstD.getRawAxis(1), () -> FirstD.getRawAxis(4)));
 
 //Control del brazo (movimiento libre)
- // armSubsystem.setDefaultCommand(new ArmCommand(armSubsystem, () -> Ctrl.getRawAxis(1)));
+  armSubsystem.setDefaultCommand(new ArmCommand(armSubsystem, () -> SecondD.getRawAxis(1)));
 
 //Control del Intake (seleccion de velocidades)
-  new JoystickButton(Ctrl, 1).toggleOnTrue(new IntakeCommand(intakeSubsystem, () -> true, () -> false,  () -> false,  () -> false));
-  new JoystickButton(Ctrl, 2).toggleOnTrue(new IntakeCommand(intakeSubsystem, () -> false, () -> true,  () -> false,  () -> false));
-  new JoystickButton(Ctrl, 3).toggleOnTrue(new IntakeCommand(intakeSubsystem, () -> false, () -> false,  () -> true,  () -> false));
-  new JoystickButton(Ctrl, 4).toggleOnTrue(new IntakeCommand(intakeSubsystem, () -> false, () -> false,  () -> false,  () -> true));
+  new JoystickButton(SecondD, 1).toggleOnTrue(new IntakeCommand(intakeSubsystem, () -> true, () -> false,  () -> false,  () -> false));
+  new JoystickButton(SecondD, 2).toggleOnTrue(new IntakeCommand(intakeSubsystem, () -> false, () -> true,  () -> false,  () -> false));
+  new JoystickButton(SecondD, 3).toggleOnTrue(new IntakeCommand(intakeSubsystem, () -> false, () -> false,  () -> true,  () -> false));
+  new JoystickButton(SecondD, 4).toggleOnTrue(new IntakeCommand(intakeSubsystem, () -> false, () -> false,  () -> false,  () -> true));
   }
 
   public Command getAutonomousCommand() {

@@ -22,13 +22,6 @@ public class DriveCommand extends Command {
   @Override
   public void initialize() {
     driveSubsystem.configtalon();
-    driveSubsystem.LftEnc();
-    driveSubsystem.RgtEnc();
-
-    driveSubsystem.LftVel();
-    driveSubsystem.RgtVel();
-
-    driveSubsystem.getRotation2d();
   }
 
 //Ejecucion de los metodos del subsistema (periodic)
@@ -41,7 +34,6 @@ public class DriveCommand extends Command {
   @Override
   public void end(boolean interrupted) {
     driveSubsystem.Arcade_Drive(0, 0);
-    driveSubsystem.Reset();
   }
 
   @Override
