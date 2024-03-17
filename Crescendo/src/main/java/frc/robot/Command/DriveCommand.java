@@ -28,12 +28,14 @@ public class DriveCommand extends Command {
   @Override
   public void execute() {
     driveSubsystem.Arcade_Drive(FunSpd.get(), FunGrr.get());
+    driveSubsystem.Smartdashboard();
   }
 
 //Finalisacion de los metodos del Subsistema
   @Override
   public void end(boolean interrupted) {
     driveSubsystem.Arcade_Drive(0, 0);
+    driveSubsystem.Reset();
   }
 
   @Override

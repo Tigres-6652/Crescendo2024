@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class DriveSubsystem extends SubsystemBase {
@@ -34,14 +35,16 @@ public class DriveSubsystem extends SubsystemBase {
   DifferentialDriveOdometry m_odometry;
   DifferentialDriveKinematics m_kinematics;
   Field2d m_Field2d;
+  AHRS Navx = new AHRS(SPI.Port.kMXP);
 
 //=================================================================================================================\\
   public DriveSubsystem() {   
 
   AHRS Navx = new AHRS(SPI.Port.kMXP);
+  configtalon();
+  Smartdashboard();
   RgtEnc();
   RgtVel();
-
   LftEnc();
   LftVel();
   
@@ -75,20 +78,32 @@ public class DriveSubsystem extends SubsystemBase {
     Chasis.arcadeDrive(Speed, Giro);
   }
 
+//==tankdrive==========================================
+  public void tanque(double Lft, double Rgt) {
+    Chasis.tankDrive(Lft, Rgt);
+  }
+
 //==Ecoders============================================
   public double RgtEnc() {
-    return (RMtrEnc.getSelectedSensorPosition() / 4096 * Math.PI * 9 * 2.54) / 100;
+    return (RMtrEnc.getSelectedSensorPosition() / 4096 * Math.PI * 6 * 2.54) / 100;
   }
   public double LftEnc() {
-    return (LMtrEnc.getSelectedSensorPosition() / 4096 * Math.PI * 9 * 2.54) / 100;
+    return (LMtrEnc.getSelectedSensorPosition() / 4096 * Math.PI * 6 * 2.54) / 100;
   }
 
 //==Velocidad del los motores===========================
   public double RgtVel() {
-    return (RMtrEnc.getSelectedSensorVelocity() / 4096 * Math.PI * 9 * 2.54) / 100;
+    return (RMtrEnc.getSelectedSensorVelocity() / 4096 * Math.PI * 6 * 2.54) / 100;
   }
   public double LftVel() {
-    return (LMtrEnc.getSelectedSensorVelocity() / 4096 * Math.PI * 9 * 2.54) / 100;
+    return (LMtrEnc.getSelectedSensorVelocity() / 4096 * Math.PI * 6 * 2.54) / 100;
+  }
+
+//==ResetEncoders=======================================
+  public void Reset() {
+    RMtrEnc.setSelectedSensorPosition(0);
+    LMtrEnc.setSelectedSensorPosition(0);
+    Navx.reset();
   }
 
 //==GetPose=============================================
@@ -109,7 +124,16 @@ public class DriveSubsystem extends SubsystemBase {
 //==SetSpeeds===========================================
   public void driveChassisSpeeds(ChassisSpeeds speeds){
     DifferentialDriveWheelSpeeds diffSpeeds = m_kinematics.toWheelSpeeds(speeds);
-    Arcade_Drive(diffSpeeds.leftMetersPerSecond, diffSpeeds.rightMetersPerSecond);
+    tanque(diffSpeeds.leftMetersPerSecond, diffSpeeds.rightMetersPerSecond);
+  }
+
+//==SmartDashboard======================================
+  public void Smartdashboard() {
+    SmartDashboard.putNumber("Encoder derecho", RgtEnc());
+    SmartDashboard.putNumber("Velocidad derecho", RgtVel());
+
+    SmartDashboard.putNumber("Encoder izquuierdo", LftEnc());
+    SmartDashboard.putNumber("Velocidad izquierdo", LftVel());
   }
 
 //==Configuracion de los motores y PID==================

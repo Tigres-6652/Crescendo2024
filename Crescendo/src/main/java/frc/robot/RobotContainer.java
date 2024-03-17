@@ -36,7 +36,7 @@ public class RobotContainer {
 
   private void configureBindings() {
 //Control del robot
-  driveSubsystem.setDefaultCommand(new DriveCommand(driveSubsystem, () -> FirstD.getRawAxis(1), () -> FirstD.getRawAxis(4)));
+  driveSubsystem.setDefaultCommand(new DriveCommand(driveSubsystem, () -> FirstD.getRawAxis(4), () -> FirstD.getRawAxis(1)));
 
 //Control del brazo (movimiento libre)
   armSubsystem.setDefaultCommand(new ArmCommand(armSubsystem, () -> SecondD.getRawAxis(1)));
