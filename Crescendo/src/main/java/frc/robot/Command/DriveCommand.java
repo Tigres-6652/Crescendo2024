@@ -29,6 +29,8 @@ public class DriveCommand extends Command {
   public void execute() {
     driveSubsystem.Arcade_Drive(FunSpd.get(), FunGrr.get());
     driveSubsystem.Smartdashboard();
+
+    //driveSubsystem.tanque(FunSpd.get()*12, FunSpd.get()*12);
   }
 
 //Finalisacion de los metodos del Subsistema

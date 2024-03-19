@@ -38,22 +38,27 @@ public class DriveSubsystem extends SubsystemBase {
   Field2d m_Field2d;
   AHRS Navx = new AHRS(SPI.Port.kMXP);
 
+  Rotation2d rot = new Rotation2d();
+  
+
+
+
 //=================================================================================================================\\
   public DriveSubsystem() {   
 
-  AHRS Navx = new AHRS(SPI.Port.kMXP);
-  configtalon();
-  Smartdashboard();
-  RgtEnc();
-  RgtVel();
-  LftEnc();
-  LftVel();
+  //configtalon();
+  //Smartdashboard();
+  //RgtEnc();
+  //RgtVel();
+  //LftEnc();
+  //LftVel();
   
   m_Field2d = new Field2d();
   m_odometry = new DifferentialDriveOdometry(getRotation2d(), 0, 0);
   m_kinematics = new DifferentialDriveKinematics(0.3556);
 
-      AutoBuilder.configureRamsete(
+
+       /*  AutoBuilder.configureRamsete(
         this::getPose,
         this::resetPose,
         this::getCurrentSpeeds,
@@ -68,11 +73,38 @@ public class DriveSubsystem extends SubsystemBase {
         return false;
       },
       this
-    );
+    );*/
+
+
+    AutoBuilder.configureLTV(        
+        this::getPose,
+        this::resetPose,
+        this::getCurrentSpeeds,
+        this::driveChassisSpeeds,
+        0.02,
+        new ReplanningConfig(),
+        () -> {
+
+        var alliance = DriverStation.getAlliance();
+         if (alliance.isPresent()) {
+          return alliance.get() == DriverStation.Alliance.Red;
+        }
+        return false;
+      },
+      this);
+
   }
 
   @Override
-  public void periodic() {}
+  public void periodic() {
+m_odometry.update(getRotation2d(), LftEnc(), RgtEnc());
+Smartdashboard();
+
+m_Field2d.setRobotPose(getPose());
+
+SmartDashboard.putString("pose", getPose().toString());
+
+  }
 
 //==Metodo para controla el chasis=====================
   public void Arcade_Drive(double Speed, double Giro){
@@ -81,7 +113,11 @@ public class DriveSubsystem extends SubsystemBase {
 
 //==tankdrive==========================================
   public void tanque(double Lft, double Rgt) {
-    Chasis.tankDrive(Lft, Rgt);
+   
+ 
+    Chasis.tankDrive(-Lft*0.3, -Rgt*0.3);
+
+   // Chasis.tankDrive(Lft, Rgt);
   }
 
 //==Ecoders============================================
@@ -94,15 +130,15 @@ public class DriveSubsystem extends SubsystemBase {
 
 //==Velocidad del los motores===========================
   public double RgtVel() {
-    return (RMtrEnc.getSelectedSensorVelocity() / 4096 * Math.PI * 6 * 2.54) / 100;
+    return (RMtrEnc.getSelectedSensorVelocity() / 4096 * Math.PI * 6 * 2.54) / 10;
   }
   public double LftVel() {
-    return (LMtrEnc.getSelectedSensorVelocity() / 4096 * Math.PI * 6 * 2.54) / 100;
+    return (LMtrEnc.getSelectedSensorVelocity() / 4096 * Math.PI * 6 * 2.54) / 10;
   }
 
 //Lectura de rotacion Navx
   public Rotation2d getRotation2d() {
-    return Navx.getRotation2d();
+    return rot.fromDegrees(-Navx.getAngle());
   }
 
 //==ResetEncoders=======================================
@@ -119,17 +155,23 @@ public class DriveSubsystem extends SubsystemBase {
 
 //==ResetPose===========================================
   public void resetPose(Pose2d pose){
-    m_odometry.resetPosition(getRotation2d(), RgtEnc(), LftEnc(), pose);
+    Reset();
+  
+    m_odometry.resetPosition(pose.getRotation(), 0, 0, pose);
   }
 
 //==GetSpeeds===========================================
   public ChassisSpeeds getCurrentSpeeds() {
-    return m_kinematics.toChassisSpeeds(new DifferentialDriveWheelSpeeds(RgtVel(), LftVel()));
+    return m_kinematics.toChassisSpeeds(new DifferentialDriveWheelSpeeds(LftVel(), RgtVel()));
   }
 
 //==SetSpeeds===========================================
   public void driveChassisSpeeds(ChassisSpeeds speeds){
     DifferentialDriveWheelSpeeds diffSpeeds = m_kinematics.toWheelSpeeds(speeds);
+
+    SmartDashboard.putNumber("Vlocidad left", diffSpeeds.leftMetersPerSecond);
+    SmartDashboard.putNumber("Vlocidad right", diffSpeeds.rightMetersPerSecond);
+
     tanque(diffSpeeds.leftMetersPerSecond, diffSpeeds.rightMetersPerSecond); 
   } 
 
@@ -147,10 +189,15 @@ public class DriveSubsystem extends SubsystemBase {
 
     SmartDashboard.putNumber("Encoder izquuierdo", LftEnc());
     SmartDashboard.putNumber("Velocidad izquierdo", LftVel());
+    //Smartdashboard.putnum
   }
 
 //==Configuracion de los motores y PID==================
   public void configtalon() {
+
+double p=0;
+double i=0;
+double d=0;
     RMtrEnc.configFactoryDefault();
     RMtrFllw.configFactoryDefault();
     LMtrEnc.configFactoryDefault();
@@ -168,24 +215,6 @@ public class DriveSubsystem extends SubsystemBase {
     RMtrEnc.setSensorPhase(true);
     LMtrEnc.setSensorPhase(true);
 
-    RMtrEnc.configNominalOutputForward(0, 30);
-    RMtrEnc.configNominalOutputReverse(0, 30);
-    RMtrEnc.configPeakOutputForward(1, 30);
-    RMtrEnc.configPeakOutputReverse(-1, 30);
-
-    RMtrEnc.config_kF(0, 0, 30);
-    RMtrEnc.config_kP(0, 0, 30);
-    RMtrEnc.config_kI(0, 0, 30);
-    RMtrEnc.config_kD(0, 0, 30);
-
-    LMtrEnc.configNominalOutputForward(0, 30);
-    LMtrEnc.configNominalOutputReverse(0, 30);
-    LMtrEnc.configPeakOutputForward(1, 30);
-    LMtrEnc.configPeakOutputReverse(-1, 30);
-
-    LMtrEnc.config_kF(0, 0, 30);
-    LMtrEnc.config_kP(0, 0, 30);
-    LMtrEnc.config_kI(0, 0, 30);
-    LMtrEnc.config_kD(0, 0, 30);
+    
   }
 }
