@@ -1,9 +1,12 @@
 package frc.robot.Subsystems;
 
+import java.util.List;
+
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.util.ReplanningConfig;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -12,12 +15,15 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
+import edu.wpi.first.math.kinematics.Odometry;
+import edu.wpi.first.math.proto.Trajectory;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.RobotContainer;
 
 public class DriveSubsystem extends SubsystemBase {
 //Motores
@@ -37,26 +43,25 @@ public class DriveSubsystem extends SubsystemBase {
   DifferentialDriveKinematics m_kinematics;
   Field2d m_Field2d;
   AHRS Navx = new AHRS(SPI.Port.kMXP);
-
+Trajectory traye;
   Rotation2d rot = new Rotation2d();
   
+  //List<PathPlannerAuto> pathGroup = PathPlannerAuto.getPathGroupFromAutoFile("si");
+  //private Pose2d posee = PathPlannerAuto.getStaringPoseFromAutoFile("si");
 
 
 
 //=================================================================================================================\\
   public DriveSubsystem() {   
-
   //configtalon();
   //Smartdashboard();
   //RgtEnc();
   //RgtVel();
   //LftEnc();
-  //LftVel();
-  
-  m_Field2d = new Field2d();
-  m_odometry = new DifferentialDriveOdometry(getRotation2d(), 0, 0);
-  m_kinematics = new DifferentialDriveKinematics(0.3556);
+  //LftVel(); 
 
+  m_Field2d = new Field2d();
+  m_kinematics = new DifferentialDriveKinematics(0.3556);
 
        /*  AutoBuilder.configureRamsete(
         this::getPose,
@@ -76,15 +81,18 @@ public class DriveSubsystem extends SubsystemBase {
     );*/
 
 
-    AutoBuilder.configureLTV(        
+  m_odometry = new DifferentialDriveOdometry(getRotation2d(), 0, 0);
+
+    AutoBuilder.configureRamsete(        
         this::getPose,
         this::resetPose,
         this::getCurrentSpeeds,
         this::driveChassisSpeeds,
-        0.02,
+        
         new ReplanningConfig(),
         () -> {
-
+        configtalon();
+        Reset();
         var alliance = DriverStation.getAlliance();
          if (alliance.isPresent()) {
           return alliance.get() == DriverStation.Alliance.Red;
@@ -92,18 +100,16 @@ public class DriveSubsystem extends SubsystemBase {
         return false;
       },
       this);
-
   }
 
   @Override
   public void periodic() {
-m_odometry.update(getRotation2d(), LftEnc(), RgtEnc());
-Smartdashboard();
+    m_odometry.update(getRotation2d(), LftEnc(), RgtEnc());
+    Smartdashboard();
 
-m_Field2d.setRobotPose(getPose());
+    m_Field2d.setRobotPose(getPose());
 
-SmartDashboard.putString("pose", getPose().toString());
-
+    SmartDashboard.putString("pose", getPose().toString());
   }
 
 //==Metodo para controla el chasis=====================
@@ -113,8 +119,6 @@ SmartDashboard.putString("pose", getPose().toString());
 
 //==tankdrive==========================================
   public void tanque(double Lft, double Rgt) {
-   
- 
     Chasis.tankDrive(-Lft*0.3, -Rgt*0.3);
 
    // Chasis.tankDrive(Lft, Rgt);
@@ -155,9 +159,18 @@ SmartDashboard.putString("pose", getPose().toString());
 
 //==ResetPose===========================================
   public void resetPose(Pose2d pose){
-    Reset();
-  
+    
+    //pose = PathPlannerAuto.getStaringPoseFromAutoFile("si");
     m_odometry.resetPosition(pose.getRotation(), 0, 0, pose);
+  
+    //pose = new Pose2d(2,2, getRotation2d());
+    //    m_odometry.resetPosition(pose.getRotation(), 0, 0, getPose());
+    
+  }
+
+  public void resetCordenadas() {
+
+    m_odometry = new DifferentialDriveOdometry(Navx.getRotation2d(), 0, 0);
   }
 
 //==GetSpeeds===========================================
@@ -214,7 +227,5 @@ double d=0;
     
     RMtrEnc.setSensorPhase(true);
     LMtrEnc.setSensorPhase(true);
-
-    
   }
 }

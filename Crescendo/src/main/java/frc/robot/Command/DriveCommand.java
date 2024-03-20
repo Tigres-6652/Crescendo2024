@@ -38,6 +38,7 @@ public class DriveCommand extends Command {
   public void end(boolean interrupted) {
     driveSubsystem.Arcade_Drive(0, 0);
     driveSubsystem.Reset();
+    driveSubsystem.resetCordenadas();
   }
 
   @Override

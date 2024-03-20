@@ -4,10 +4,12 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.path.PathPlannerPath;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Command.ArmCommand;
 import frc.robot.Command.DriveCommand;
@@ -26,14 +28,15 @@ public class RobotContainer {
   private final Joystick FirstD = new Joystick(0);
   private final Joystick SecondD = new Joystick(1);
 
-  //private final SendableChooser<Command> autoChooser;
+  private final SendableChooser<Command> autoChooser;
 
   public RobotContainer() {
   configureBindings();
 SmartDashboard.putData("Drivetrain",driveSubsystem);
 //building the auto chooser for pathplanner
-  //autoChooser = AutoBuilder.buildAutoChooser();
-  //SmartDashboard.putData("AutoChooser", autoChooser);
+
+  autoChooser = AutoBuilder.buildAutoChooser();
+  SmartDashboard.putData("AutoChooser", autoChooser);
   }
 
   private void configureBindings() {
@@ -51,6 +54,9 @@ SmartDashboard.putData("Drivetrain",driveSubsystem);
   }
 
   public Command getAutonomousCommand() {
-    return AutoBuilder.followPath(PathPlannerPath.fromPathFile("si"));
+    //return AutoBuilder.followPath(PathPlannerPath.fromPathFile("si"));
+    
+    return autoChooser.getSelected();
+    //return new SequentialCommandGroup(new Rese);
   }
 }
