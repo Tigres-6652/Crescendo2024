@@ -3,6 +3,8 @@ package frc.robot;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.path.PathPlannerPath;
+import com.pathplanner.lib.path.PathPlannerTrajectory;
+import com.pathplanner.lib.util.PathPlannerLogging;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.Joystick;
@@ -31,6 +33,9 @@ public class RobotContainer {
   private final SendableChooser<Command> autoChooser;
 
   public RobotContainer() {
+
+
+    
   configureBindings();
 SmartDashboard.putData("Drivetrain",driveSubsystem);
 //building the auto chooser for pathplanner
@@ -54,9 +59,11 @@ SmartDashboard.putData("Drivetrain",driveSubsystem);
   }
 
   public Command getAutonomousCommand() {
-    //return AutoBuilder.followPath(PathPlannerPath.fromPathFile("si"));
+    return AutoBuilder.followPath(PathPlannerPath.fromPathFile("si"));
+
+
     
-    return autoChooser.getSelected();
+    //return autoChooser.getSelected();
     //return new SequentialCommandGroup(new Rese);
   }
 }

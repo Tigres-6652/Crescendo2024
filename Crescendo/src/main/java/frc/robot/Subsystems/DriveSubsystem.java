@@ -1,5 +1,6 @@
 package frc.robot.Subsystems;
 
+import java.nio.file.Path;
 import java.util.List;
 
 import com.ctre.phoenix.motorcontrol.InvertType;
@@ -81,7 +82,7 @@ Trajectory traye;
     );*/
 
 
-  m_odometry = new DifferentialDriveOdometry(getRotation2d(), 0, 0);
+  m_odometry = new DifferentialDriveOdometry(getRotation2d(), LftEnc(), RgtEnc());
 
     AutoBuilder.configureRamsete(        
         this::getPose,
@@ -92,7 +93,7 @@ Trajectory traye;
         new ReplanningConfig(),
         () -> {
         configtalon();
-        Reset();
+        //Reset();
         var alliance = DriverStation.getAlliance();
          if (alliance.isPresent()) {
           return alliance.get() == DriverStation.Alliance.Red;
@@ -104,6 +105,7 @@ Trajectory traye;
 
   @Override
   public void periodic() {
+    
     m_odometry.update(getRotation2d(), LftEnc(), RgtEnc());
     Smartdashboard();
 
@@ -142,7 +144,7 @@ Trajectory traye;
 
 //Lectura de rotacion Navx
   public Rotation2d getRotation2d() {
-    return rot.fromDegrees(-Navx.getAngle());
+    return Navx.getRotation2d();
   }
 
 //==ResetEncoders=======================================
@@ -159,10 +161,14 @@ Trajectory traye;
 
 //==ResetPose===========================================
   public void resetPose(Pose2d pose){
-    
+  SmartDashboard.putString("reset", pose.toString());
+
+
     //pose = PathPlannerAuto.getStaringPoseFromAutoFile("si");
-    m_odometry.resetPosition(pose.getRotation(), 0, 0, pose);
   
+    m_odometry.resetPosition(Navx.getRotation2d(), LftEnc(), RgtEnc(), pose);
+        m_odometry = new DifferentialDriveOdometry(Navx.getRotation2d(), LftEnc(), RgtEnc(),pose);
+
     //pose = new Pose2d(2,2, getRotation2d());
     //    m_odometry.resetPosition(pose.getRotation(), 0, 0, getPose());
     
@@ -208,13 +214,7 @@ Trajectory traye;
 //==Configuracion de los motores y PID==================
   public void configtalon() {
 
-double p=0;
-double i=0;
-double d=0;
-    RMtrEnc.configFactoryDefault();
-    RMtrFllw.configFactoryDefault();
-    LMtrEnc.configFactoryDefault();
-    LMtrFllw.configFactoryDefault();
+
     
     RMtrFllw.follow(RMtrEnc);
     LMtrFllw.follow(LMtrEnc);
