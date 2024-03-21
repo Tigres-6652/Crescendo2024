@@ -16,7 +16,6 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
-import edu.wpi.first.math.kinematics.Odometry;
 import edu.wpi.first.math.proto.Trajectory;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SPI;
@@ -24,7 +23,7 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.RobotContainer;
+
 
 public class DriveSubsystem extends SubsystemBase {
 //Motores
@@ -54,32 +53,9 @@ Trajectory traye;
 
 //=================================================================================================================\\
   public DriveSubsystem() {   
-  //configtalon();
-  //Smartdashboard();
-  //RgtEnc();
-  //RgtVel();
-  //LftEnc();
-  //LftVel(); 
 
   m_Field2d = new Field2d();
   m_kinematics = new DifferentialDriveKinematics(0.3556);
-
-       /*  AutoBuilder.configureRamsete(
-        this::getPose,
-        this::resetPose,
-        this::getCurrentSpeeds,
-        this::driveChassisSpeeds,
-        new ReplanningConfig(),
-        () -> {
-
-        var alliance = DriverStation.getAlliance();
-         if (alliance.isPresent()) {
-          return alliance.get() == DriverStation.Alliance.Red;
-        }
-        return false;
-      },
-      this
-    );*/
 
 
   m_odometry = new DifferentialDriveOdometry(getRotation2d(), LftEnc(), RgtEnc());
@@ -93,7 +69,6 @@ Trajectory traye;
         new ReplanningConfig(),
         () -> {
         configtalon();
-        //Reset();
         var alliance = DriverStation.getAlliance();
          if (alliance.isPresent()) {
           return alliance.get() == DriverStation.Alliance.Red;
@@ -114,6 +89,8 @@ Trajectory traye;
     SmartDashboard.putString("pose", getPose().toString());
   }
 
+
+
 //==Metodo para controla el chasis=====================
   public void Arcade_Drive(double Speed, double Giro){
     Chasis.arcadeDrive(Speed, Giro);
@@ -121,9 +98,7 @@ Trajectory traye;
 
 //==tankdrive==========================================
   public void tanque(double Lft, double Rgt) {
-    Chasis.tankDrive(-Lft*0.3, -Rgt*0.3);
-
-   // Chasis.tankDrive(Lft, Rgt);
+    Chasis.tankDrive(-Lft*2, -Rgt*2);
   }
 
 //==Ecoders============================================
@@ -160,24 +135,13 @@ Trajectory traye;
   }
 
 //==ResetPose===========================================
+
   public void resetPose(Pose2d pose){
-  SmartDashboard.putString("reset", pose.toString());
-
-
-    //pose = PathPlannerAuto.getStaringPoseFromAutoFile("si");
-  
+  SmartDashboard.putString("reset", pose.toString());  
     m_odometry.resetPosition(Navx.getRotation2d(), LftEnc(), RgtEnc(), pose);
-        m_odometry = new DifferentialDriveOdometry(Navx.getRotation2d(), LftEnc(), RgtEnc(),pose);
 
-    //pose = new Pose2d(2,2, getRotation2d());
-    //    m_odometry.resetPosition(pose.getRotation(), 0, 0, getPose());
-    
   }
 
-  public void resetCordenadas() {
-
-    m_odometry = new DifferentialDriveOdometry(Navx.getRotation2d(), 0, 0);
-  }
 
 //==GetSpeeds===========================================
   public ChassisSpeeds getCurrentSpeeds() {
@@ -194,12 +158,6 @@ Trajectory traye;
     tanque(diffSpeeds.leftMetersPerSecond, diffSpeeds.rightMetersPerSecond); 
   } 
 
-/* public void driveChassisSpeeds(ChassisSpeeds speed) {
-    double linearSpeed = speed.vxMetersPerSecond;
-    double rotSpeed = speed.omegaRadiansPerSecond;
-    
-    Arcade_Drive(linearSpeed, rotSpeed);
-  } */
 
 //==SmartDashboard======================================
   public void Smartdashboard() {
@@ -208,7 +166,6 @@ Trajectory traye;
 
     SmartDashboard.putNumber("Encoder izquuierdo", LftEnc());
     SmartDashboard.putNumber("Velocidad izquierdo", LftVel());
-    //Smartdashboard.putnum
   }
 
 //==Configuracion de los motores y PID==================

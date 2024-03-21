@@ -16,6 +16,12 @@
           "data": {
             "pathName": "si"
           }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 5.0
+          }
         }
       ]
     }
