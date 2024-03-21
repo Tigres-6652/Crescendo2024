@@ -54,9 +54,8 @@ SmartDashboard.putData("Drivetrain",driveSubsystem);
   }
 
   public Command getAutonomousCommand() {
-    //return AutoBuilder.followPath(PathPlannerPath.fromPathFile("si"));
-    
-    return autoChooser.getSelected();
+    return AutoBuilder.followPath(PathPlannerPath.fromPathFile("si"));
+    //return autoChooser.getSelected();
     //return new SequentialCommandGroup(new Rese);
   }
 }

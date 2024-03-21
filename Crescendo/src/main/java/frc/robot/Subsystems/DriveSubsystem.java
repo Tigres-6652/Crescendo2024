@@ -8,7 +8,11 @@ import com.kauailabs.navx.frc.AHRS;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.util.ReplanningConfig;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.REVLibError;
 
+import edu.wpi.first.math.controller.RamseteController;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -17,11 +21,17 @@ import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.math.kinematics.Odometry;
 import edu.wpi.first.math.proto.Trajectory;
+import edu.wpi.first.math.trajectory.TrajectoryConfig;
+import edu.wpi.first.math.trajectory.TrajectoryGenerator;
+import edu.wpi.first.math.trajectory.constraint.DifferentialDriveVoltageConstraint;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotContainer;
 
@@ -82,7 +92,6 @@ Trajectory traye;
 
 
   m_odometry = new DifferentialDriveOdometry(getRotation2d(), 0, 0);
-
     AutoBuilder.configureRamsete(        
         this::getPose,
         this::resetPose,
@@ -161,7 +170,7 @@ Trajectory traye;
   public void resetPose(Pose2d pose){
     
     //pose = PathPlannerAuto.getStaringPoseFromAutoFile("si");
-    m_odometry.resetPosition(pose.getRotation(), 0, 0, pose);
+    m_odometry.resetPosition(pose.getRotation(), LftEnc(), RgtEnc(), pose);
   
     //pose = new Pose2d(2,2, getRotation2d());
     //    m_odometry.resetPosition(pose.getRotation(), 0, 0, getPose());
@@ -169,7 +178,6 @@ Trajectory traye;
   }
 
   public void resetCordenadas() {
-
     m_odometry = new DifferentialDriveOdometry(Navx.getRotation2d(), 0, 0);
   }
 
@@ -188,6 +196,24 @@ Trajectory traye;
     tanque(diffSpeeds.leftMetersPerSecond, diffSpeeds.rightMetersPerSecond); 
   } 
 
+  public Command followRamseteCommand(){
+    SimpleMotorFeedforward ff = new SimpleMotorFeedforward(0, 0, 0);
+    DifferentialDriveVoltageConstraint constraint = new DifferentialDriveVoltageConstraint(ff, m_kinematics, 10);
+    TrajectoryConfig config = new TrajectoryConfig(3, 3)
+      .setKinematics(m_kinematics)
+      .addConstraint(constraint);
+
+    Pose2d start = new Pose2d(1.34, 5.55, new Rotation2d(Math.PI));
+    Pose2d end = new Pose2d(2.27, 5.55, new Rotation2d(Math.PI));
+
+   Pose2d trajectory = PathPlannerAuto.getStaringPoseFromAutoFile("si");
+
+    RamseteCommand cmd = new RamseteCommand(trajectory, this::getPose, new RamseteController(), m_kinematics, this::tanque, this);
+    
+    return Commands.runOnce(() -> this.resetPose(trajectory.getInitialPose()))
+      .andThen(cmd)
+      .andThen(Commands.runOnce(()-> this.tanque(0, 0)));
+  }
 /* public void driveChassisSpeeds(ChassisSpeeds speed) {
     double linearSpeed = speed.vxMetersPerSecond;
     double rotSpeed = speed.omegaRadiansPerSecond;
@@ -207,10 +233,6 @@ Trajectory traye;
 
 //==Configuracion de los motores y PID==================
   public void configtalon() {
-
-double p=0;
-double i=0;
-double d=0;
     RMtrEnc.configFactoryDefault();
     RMtrFllw.configFactoryDefault();
     LMtrEnc.configFactoryDefault();
