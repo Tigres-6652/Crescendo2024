@@ -3,7 +3,9 @@ package frc.robot.Subsystems;
 import java.nio.file.Path;
 import java.util.List;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.InvertType;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -23,6 +25,7 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 
 public class DriveSubsystem extends SubsystemBase {
@@ -43,7 +46,7 @@ public class DriveSubsystem extends SubsystemBase {
   DifferentialDriveKinematics m_kinematics;
   Field2d m_Field2d;
   AHRS Navx = new AHRS(SPI.Port.kMXP);
-Trajectory traye;
+  Trajectory traye;
   Rotation2d rot = new Rotation2d();
   
   //List<PathPlannerAuto> pathGroup = PathPlannerAuto.getPathGroupFromAutoFile("si");
@@ -53,7 +56,7 @@ Trajectory traye;
 
 //=================================================================================================================\\
   public DriveSubsystem() {   
-
+configtalon();
   m_Field2d = new Field2d();
   m_kinematics = new DifferentialDriveKinematics(0.3556);
 
@@ -66,9 +69,9 @@ Trajectory traye;
         this::getCurrentSpeeds,
         this::driveChassisSpeeds,
         
-        new ReplanningConfig(),
+        new ReplanningConfig(true,false),
         () -> {
-        configtalon();
+        
         var alliance = DriverStation.getAlliance();
          if (alliance.isPresent()) {
           return alliance.get() == DriverStation.Alliance.Red;
@@ -84,6 +87,7 @@ Trajectory traye;
     m_odometry.update(getRotation2d(), LftEnc(), RgtEnc());
     Smartdashboard();
 
+
     m_Field2d.setRobotPose(getPose());
 
     SmartDashboard.putString("pose", getPose().toString());
@@ -94,11 +98,21 @@ Trajectory traye;
 //==Metodo para controla el chasis=====================
   public void Arcade_Drive(double Speed, double Giro){
     Chasis.arcadeDrive(Speed, Giro);
+    //RMtrEnc.set(ControlMode.Velocity,-Speed*4096);
+    //LMtrEnc.set(ControlMode.Velocity,-Giro*4096);
   }
 
 //==tankdrive==========================================
   public void tanque(double Lft, double Rgt) {
-    Chasis.tankDrive(-Lft*2, -Rgt*2);
+//    RMtrEnc.set(ControlMode.Velocity,-Rgt*4096);
+//    LMtrEnc.set(ControlMode.Velocity,-Lft*4096);
+    Chasis.tankDrive(-Lft/3, -Rgt/3);
+
+  /*   RMtrEnc.setVoltage(-Rgt*3.85);
+    LMtrEnc.setVoltage(-Lft*3.85);*/
+SmartDashboard.putNumber("velL", Lft);
+SmartDashboard.putNumber("velR", Rgt);
+
   }
 
 //==Ecoders============================================
@@ -169,10 +183,19 @@ Trajectory traye;
   }
 
 //==Configuracion de los motores y PID==================
-  public void configtalon() {
+  public void configtalon() {    
 
+    //double kF=1023.0/7200.0;
+    double LkP=0.15;
+    double LkI=0.000;
+    double LkD=0;
 
-    
+    double RkP=0.15;
+    double RkI=0.000;
+    double RkD=0;
+
+    int kPIDLoopIdx = 0;
+    int kTimeoutMs=30;
     RMtrFllw.follow(RMtrEnc);
     LMtrFllw.follow(LMtrEnc);
     
@@ -184,5 +207,32 @@ Trajectory traye;
     
     RMtrEnc.setSensorPhase(true);
     LMtrEnc.setSensorPhase(true);
+
+    RMtrEnc.setNeutralMode(NeutralMode.Brake);
+    RMtrFllw.setNeutralMode(NeutralMode.Brake);
+    LMtrEnc.setNeutralMode(NeutralMode.Brake);
+    LMtrFllw.setNeutralMode(NeutralMode.Brake);
+
+    /* 
+    RMtrEnc.configNominalOutputForward(0, kTimeoutMs);
+		RMtrEnc.configNominalOutputReverse(0, kTimeoutMs);
+		RMtrEnc.configPeakOutputForward(1, kTimeoutMs);
+		RMtrEnc.configPeakOutputReverse(-1, kTimeoutMs);
+
+		//RMtrEnc.config_kF(kPIDLoopIdx, kF,kTimeoutMs);
+		RMtrEnc.config_kP(kPIDLoopIdx, RkP, kTimeoutMs);
+		RMtrEnc.config_kI(kPIDLoopIdx, RkI, kTimeoutMs);
+		RMtrEnc.config_kD(kPIDLoopIdx, RkD, kTimeoutMs);
+
+    LMtrEnc.configNominalOutputForward(0, kTimeoutMs);
+		LMtrEnc.configNominalOutputReverse(0, kTimeoutMs);
+		LMtrEnc.configPeakOutputForward(1, kTimeoutMs);
+		LMtrEnc.configPeakOutputReverse(-1, kTimeoutMs);
+
+	  //LMtrEnc.config_kF(kPIDLoopIdx, kF, kTimeoutMs);
+		LMtrEnc.config_kP(kPIDLoopIdx, LkP, kTimeoutMs);
+		LMtrEnc.config_kI(kPIDLoopIdx, LkI, kTimeoutMs);
+		LMtrEnc.config_kD(kPIDLoopIdx, LkD, kTimeoutMs);
+    */
   }
 }

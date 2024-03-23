@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.3464015540159702,
-      "y": 4.148470076301703
+      "x": 0.7523718013035084,
+      "y": 4.3627103149817215
     },
-    "rotation": 180.0
+    "rotation": 120.0
   },
   "command": {
     "type": "sequential",
@@ -15,6 +15,18 @@
           "type": "path",
           "data": {
             "pathName": "3-speaker-3"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.0
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "3-speaker"
           }
         }
       ]

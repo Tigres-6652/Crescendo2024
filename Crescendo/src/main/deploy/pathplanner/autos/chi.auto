@@ -2,8 +2,8 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.580118178029951,
-      "y": 3.710251406267938
+      "x": 1.901478536048206,
+      "y": 4.732761636341778
     },
     "rotation": 0
   },
@@ -14,7 +14,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "moviliti solo"
+            "pathName": "h"
           }
         }
       ]
