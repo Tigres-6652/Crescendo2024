@@ -1,15 +1,11 @@
 package frc.robot.Subsystems;
 
-import java.nio.file.Path;
-import java.util.List;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
 import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.util.ReplanningConfig;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -25,7 +21,6 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
 
 
 public class DriveSubsystem extends SubsystemBase {
@@ -106,7 +101,7 @@ configtalon();
   public void tanque(double Lft, double Rgt) {
 //    RMtrEnc.set(ControlMode.Velocity,-Rgt*4096);
 //    LMtrEnc.set(ControlMode.Velocity,-Lft*4096);
-    Chasis.tankDrive(-Lft/3, -Rgt/3);
+    Chasis.tankDrive(-Lft/2, -Rgt/2);
 
   /*   RMtrEnc.setVoltage(-Rgt*3.85);
     LMtrEnc.setVoltage(-Lft*3.85);*/
@@ -200,6 +195,7 @@ SmartDashboard.putNumber("velR", Rgt);
     LMtrFllw.follow(LMtrEnc);
     
     LMtrEnc.setInverted(true);
+    
     RMtrEnc.setInverted(false);
     
     RMtrFllw.setInverted(InvertType.FollowMaster);
