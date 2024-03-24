@@ -5,7 +5,7 @@
       "x": 1.4048307100172925,
       "y": 5.55
     },
-    "rotation": 0
+    "rotation": 0.0
   },
   "command": {
     "type": "sequential",
@@ -33,18 +33,6 @@
           "type": "path",
           "data": {
             "pathName": "Chuy_4"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Chuy_5"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Chuy_6"
           }
         }
       ]

@@ -1,6 +1,8 @@
 package frc.robot.Subsystems;
 
 
+import java.net.NetworkInterface;
+
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
@@ -15,6 +17,9 @@ import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.math.proto.Trajectory;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -47,14 +52,11 @@ public class DriveSubsystem extends SubsystemBase {
   //List<PathPlannerAuto> pathGroup = PathPlannerAuto.getPathGroupFromAutoFile("si");
   //private Pose2d posee = PathPlannerAuto.getStaringPoseFromAutoFile("si");
 
-
-
 //=================================================================================================================\\
   public DriveSubsystem() {   
-configtalon();
+  configtalon();
   m_Field2d = new Field2d();
   m_kinematics = new DifferentialDriveKinematics(0.3556);
-
 
   m_odometry = new DifferentialDriveOdometry(getRotation2d(), LftEnc(), RgtEnc());
 
@@ -88,8 +90,6 @@ configtalon();
     SmartDashboard.putString("pose", getPose().toString());
   }
 
-
-
 //==Metodo para controla el chasis=====================
   public void Arcade_Drive(double Speed, double Giro){
     Chasis.arcadeDrive(Speed, Giro);
@@ -101,13 +101,12 @@ configtalon();
   public void tanque(double Lft, double Rgt) {
 //    RMtrEnc.set(ControlMode.Velocity,-Rgt*4096);
 //    LMtrEnc.set(ControlMode.Velocity,-Lft*4096);
-    Chasis.tankDrive(-Lft/2, -Rgt/2);
+    Chasis.tankDrive(-Lft/2.5, -Rgt/2.5);
 
-  /*   RMtrEnc.setVoltage(-Rgt*3.85);
+  /*  RMtrEnc.setVoltage(-Rgt*3.85);
     LMtrEnc.setVoltage(-Lft*3.85);*/
 SmartDashboard.putNumber("velL", Lft);
 SmartDashboard.putNumber("velR", Rgt);
-
   }
 
 //==Ecoders============================================
@@ -148,9 +147,7 @@ SmartDashboard.putNumber("velR", Rgt);
   public void resetPose(Pose2d pose){
   SmartDashboard.putString("reset", pose.toString());  
     m_odometry.resetPosition(Navx.getRotation2d(), LftEnc(), RgtEnc(), pose);
-
   }
-
 
 //==GetSpeeds===========================================
   public ChassisSpeeds getCurrentSpeeds() {
@@ -163,7 +160,7 @@ SmartDashboard.putNumber("velR", Rgt);
 
     SmartDashboard.putNumber("Vlocidad left", diffSpeeds.leftMetersPerSecond);
     SmartDashboard.putNumber("Vlocidad right", diffSpeeds.rightMetersPerSecond);
-
+  
     tanque(diffSpeeds.leftMetersPerSecond, diffSpeeds.rightMetersPerSecond); 
   } 
 

@@ -1,7 +1,5 @@
 package frc.robot;
 
-
-
 import com.pathplanner.lib.auto.AutoBuilder;
 
 import edu.wpi.first.wpilibj.Joystick;

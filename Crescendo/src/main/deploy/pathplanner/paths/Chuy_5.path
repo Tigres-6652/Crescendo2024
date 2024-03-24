@@ -24,10 +24,26 @@
         "y": 5.505401354859715
       },
       "nextControl": {
-        "x": 2.923988766126999,
-        "y": 4.985954645693396
+        "x": 2.5124529862644907,
+        "y": 5.226017183946526
       },
       "isLocked": true,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 2.748701298114341,
+        "y": 4.976216453026026
+      },
+      "prevControl": {
+        "x": 2.7002329040691917,
+        "y": 5.080077297408489
+      },
+      "nextControl": {
+        "x": 2.8850359954575193,
+        "y": 4.684070673004929
+      },
+      "isLocked": false,
       "linkedName": null
     },
     {
@@ -49,7 +65,7 @@
   "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 2.3,
-    "maxAcceleration": 1.8,
+    "maxAcceleration": 1.6,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
@@ -59,7 +75,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": null,
+  "folder": "Chuy Folder",
   "previewStartingState": {
     "rotation": 0,
     "velocity": 0
