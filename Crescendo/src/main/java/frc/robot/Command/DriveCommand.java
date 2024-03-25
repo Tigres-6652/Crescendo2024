@@ -21,7 +21,8 @@ public class DriveCommand extends Command {
 //Inciliacion de Metodos del Subsistema (init)
   @Override
   public void initialize() {
-    driveSubsystem.configtalon();
+    driveSubsystem.configtalon();    
+    driveSubsystem.Lime_Light();
   }
 
 //Ejecucion de los metodos del subsistema (periodic)
@@ -29,7 +30,6 @@ public class DriveCommand extends Command {
   public void execute() {
     driveSubsystem.Arcade_Drive(FunSpd.get(), FunGrr.get());
     driveSubsystem.Smartdashboard();
-
     //driveSubsystem.tanque(FunSpd.get()*12, FunSpd.get()*12);
   }
 

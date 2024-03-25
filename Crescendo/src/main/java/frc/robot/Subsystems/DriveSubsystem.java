@@ -26,6 +26,7 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.LimelightHelpers;
 
 
 public class DriveSubsystem extends SubsystemBase {
@@ -48,12 +49,17 @@ public class DriveSubsystem extends SubsystemBase {
   AHRS Navx = new AHRS(SPI.Port.kMXP);
   Trajectory traye;
   Rotation2d rot = new Rotation2d();
-  
+
+  double xd = LimelightHelpers.getTX("xd");
+
+
+
   //List<PathPlannerAuto> pathGroup = PathPlannerAuto.getPathGroupFromAutoFile("si");
   //private Pose2d posee = PathPlannerAuto.getStaringPoseFromAutoFile("si");
 
 //=================================================================================================================\\
   public DriveSubsystem() {   
+
   configtalon();
   m_Field2d = new Field2d();
   m_kinematics = new DifferentialDriveKinematics(0.3556);
@@ -163,8 +169,22 @@ SmartDashboard.putNumber("velR", Rgt);
   
     tanque(diffSpeeds.leftMetersPerSecond, diffSpeeds.rightMetersPerSecond); 
   } 
+//==LimeLigt==========================================
+  public void Lime_Light() {
+    NetworkTable table = NetworkTableInstance.getDefault().getTable("LimeLight");
+    NetworkTableEntry tx = table.getEntry("tx");
+    NetworkTableEntry ty = table.getEntry("ty");
+    NetworkTableEntry ta = table.getEntry("ta");
 
-
+    double LL_x = tx.getDouble(0.0);
+    double LL_y = ty.getDouble(0.0);
+    double LL_a = ta.getDouble(0.0);
+      
+    SmartDashboard.putNumber("LL x", LL_x);
+    SmartDashboard.putNumber("LL y", LL_y);
+    SmartDashboard.putNumber("LL a", LL_a);
+    SmartDashboard.putNumber("xd", xd);
+  }
 //==SmartDashboard======================================
   public void Smartdashboard() {
     SmartDashboard.putNumber("Encoder derecho", RgtEnc());
@@ -172,13 +192,15 @@ SmartDashboard.putNumber("velR", Rgt);
 
     SmartDashboard.putNumber("Encoder izquuierdo", LftEnc());
     SmartDashboard.putNumber("Velocidad izquierdo", LftVel());
+
+
   }
 
 //==Configuracion de los motores y PID==================
   public void configtalon() {    
 
     //double kF=1023.0/7200.0;
-    double LkP=0.15;
+ /*    double LkP=0.15;
     double LkI=0.000;
     double LkD=0;
 
@@ -187,7 +209,8 @@ SmartDashboard.putNumber("velR", Rgt);
     double RkD=0;
 
     int kPIDLoopIdx = 0;
-    int kTimeoutMs=30;
+    int kTimeoutMs=30; */
+    
     RMtrFllw.follow(RMtrEnc);
     LMtrFllw.follow(LMtrEnc);
     
