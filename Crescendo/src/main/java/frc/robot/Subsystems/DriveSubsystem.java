@@ -1,5 +1,6 @@
 package frc.robot.Subsystems;
 
+import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -60,7 +61,7 @@ public class DriveSubsystem extends SubsystemBase {
 //=================================================================================================================\\
   public DriveSubsystem() {   
   configtalon();
-  
+
   m_Field2d = new Field2d();
   m_kinematics = new DifferentialDriveKinematics(0.3556);
   m_odometry = new DifferentialDriveOdometry(getRotation2d(), LftEnc(), RgtEnc());
@@ -96,7 +97,7 @@ public class DriveSubsystem extends SubsystemBase {
 
     m_Field2d.setRobotPose(getPose());
 
-//SmartDashboard.putString("DAta", LimelightHelpers.)
+    //SmartDashboard.putString("DAta", LimelightHelpers.)
     SmartDashboard.putString("pose", getPose().toString());
     LimelightHelpers.setPriorityTagID(lime, 3);
   }
@@ -113,6 +114,7 @@ public class DriveSubsystem extends SubsystemBase {
     
     //RMtrEnc.set(ControlMode.Velocity,-Speed*4096);
     //LMtrEnc.set(ControlMode.Velocity,-Giro*4096);
+
   }
 
 //==tankdrive==========================================
@@ -123,27 +125,25 @@ public class DriveSubsystem extends SubsystemBase {
 
     RgtMtrLdr.setVoltage(-Rgt*3.85);
     LftMtrLdr.setVoltage(-Lft*3.85);
-  //m_leftLeader.setControl(m_leftRequest.withOutput(Lft));
-  //m_rightLeader.setControl(m_rightRequest.withOutput(Rgt));
 
-SmartDashboard.putNumber("velL", Lft);
-SmartDashboard.putNumber("velR", Rgt);
+    SmartDashboard.putNumber("velL", Lft);
+    SmartDashboard.putNumber("velR", Rgt);
   }
 
 //==Ecoders============================================
   public double RgtEnc() {
-    return (RgtMtrLdr.getPosition().getValue() / 4096 * Math.PI * 6 * 2.54) / 100;
+    return (((RgtMtrLdr.getPosition().getValue()) + (RgtMtrFllw.getPosition().getValue())  / 2) / 4096 * Math.PI * 6 * 2.54) / 100;
   }
   public double LftEnc() {
-    return (LftMtrLdr.getPosition().getValue() / 4096 * Math.PI * 6 * 2.54) / 100;
+    return (((LftMtrLdr.getPosition().getValue()) + (LftMtrFllw.getPosition().getValue())  / 2) / 4096 * Math.PI * 6 * 2.54) / 100;
   }
 
 //==Velocidad del los motores===========================
   public double RgtVel() {
-    return (RgtMtrLdr.getVelocity().getValue() / 4096 * Math.PI * 6 * 2.54) / 10;
+    return (((RgtMtrLdr.getVelocity().getValue()) + (RgtMtrFllw.getVelocity().getValue()) / 2) / 4096 * Math.PI * 6 * 2.54) / 10;
   }
   public double LftVel() {
-    return (LftMtrLdr.getVelocity().getValue() / 4096 * Math.PI * 6 * 2.54) / 10;
+    return (((LftMtrLdr.getVelocity().getValue()) + (LftMtrFllw.getVelocity().getValue()) / 2) / 4096 * Math.PI * 6 * 2.54) / 10;
   }
 
 //Lectura de rotacion Navx
@@ -153,9 +153,15 @@ SmartDashboard.putNumber("velR", Rgt);
 
 //==ResetEncoders=======================================
   public void Reset() {
+    RgtMtrLdr.setPosition(0);
+    RgtMtrFllw.setPosition(0);
+    LftMtrLdr.setPosition(0);
+    LftMtrFllw.setPosition(0);
+    
+    Navx.reset();
+
     //RMtrEnc.setSelectedSensorPosition(0);
     //LMtrEnc.setSelectedSensorPosition(0);
-    Navx.reset();
   }
 
 //==GetPose=============================================
@@ -215,7 +221,8 @@ SmartDashboard.putNumber("velR", Rgt);
     }
 
 //==Configuracion de los motores y PID==================
-  public void configtalon() {    
+  public void configtalon() {   
+  //seguidor del motor
     var LeftConfiguration = new TalonFXConfiguration();
     var RigtConfiguration = new TalonFXConfiguration();
 
@@ -232,5 +239,25 @@ SmartDashboard.putNumber("velR", Rgt);
   
     LftMtrLdr.setSafetyEnabled(true);
     RgtMtrLdr.setSafetyEnabled(true);
+
+
+  //limites de corriente
+    CurrentLimitsConfigs m_currentLimits = new CurrentLimitsConfigs();
+    TalonFXConfiguration toConfigure = new TalonFXConfiguration();
+
+    m_currentLimits.SupplyCurrentLimit = 1; // Limit to 1 amps
+    m_currentLimits.SupplyCurrentThreshold = 4; // If we exceed 4 amps
+    m_currentLimits.SupplyTimeThreshold = 1.0; // For at least 1 second
+    m_currentLimits.SupplyCurrentLimitEnable = true; // And enable it
+
+    m_currentLimits.StatorCurrentLimit = 20; // Limit stator to 20 amps
+    m_currentLimits.StatorCurrentLimitEnable = true; // And enable it
+
+    toConfigure.CurrentLimits = m_currentLimits;
+
+    LftMtrLdr.getConfigurator().apply(toConfigure);
+    LftMtrFllw.getConfigurator().apply(toConfigure);
+    RgtMtrLdr.getConfigurator().apply(toConfigure);
+    RgtMtrFllw.getConfigurator().apply(toConfigure);
   }
 }
