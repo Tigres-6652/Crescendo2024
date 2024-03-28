@@ -22,7 +22,11 @@ public class PiuuuCommand extends Command {
 
 //Inciliacion de Metodos del Subsistema (init)
   @Override
-  public void initialize() {}
+  public void initialize() {
+
+    piuuuSubsystem.configPID();
+
+  }
 
 //Ejecucion de los metodos del subsistema (periodic)
   @Override
@@ -30,10 +34,10 @@ public class PiuuuCommand extends Command {
     
 
     if(Disp1.get()){
-      piuuuSubsystem.MtrShtVel(0.6);
+      piuuuSubsystem.ShootRPM(50);
 
     }else if(Disp2.get()){
-      piuuuSubsystem.MtrShtVel(0.2);
+      piuuuSubsystem.ShootRPM(100);
 
     }else{
       piuuuSubsystem.MtrShtVel(0);
