@@ -20,6 +20,7 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -51,12 +52,18 @@ public class DriveSubsystem extends SubsystemBase {
   Rotation2d rot = new Rotation2d();
   
   String lime = "limelight-limee";
-  double Limex = LimelightHelpers.getTX(lime);
-
+  double giro;
   private final Joystick FirstD = new Joystick(0);
+
+  
+
 
   //List<PathPlannerAuto> pathGroup = PathPlannerAuto.getPathGroupFromAutoFile("si");
   //private Pose2d posee = PathPlannerAuto.getStaringPoseFromAutoFile("si");
+
+      double kplime=0.4;
+      double Limex = LimelightHelpers.getTX(lime)*kplime;
+
 
 //=================================================================================================================\\
   public DriveSubsystem() {   
@@ -73,14 +80,7 @@ public class DriveSubsystem extends SubsystemBase {
         this::driveChassisSpeeds,
         
         new ReplanningConfig(true,false),
-        () -> {
-        
-        var alliance = DriverStation.getAlliance();
-         if (alliance.isPresent()) {
-          return alliance.get() == DriverStation.Alliance.Red;
-        }
-        return false;
-      },
+        this::getalliance,
       this);
   }
 
@@ -105,6 +105,9 @@ public class DriveSubsystem extends SubsystemBase {
 //==Metodo para controla el chasis=====================
   public void Arcade_Drive(double Speed, double Giro){
     Chasis.arcadeDrive(Speed, Giro);
+
+
+
 /*  var forward = -Speed;
     var turn = Giro;
     var leftout = forward + turn;
@@ -114,6 +117,53 @@ public class DriveSubsystem extends SubsystemBase {
     
     //RMtrEnc.set(ControlMode.Velocity,-Speed*4096);
     //LMtrEnc.set(ControlMode.Velocity,-Giro*4096);
+
+  }
+
+  public void AimAndDist(double vel){
+
+    double velLim=0.4;
+ 
+
+    if(Limex>velLim){
+
+      giro=velLim;
+
+    }else if(Limex<velLim && Limex > -velLim){
+
+      giro=Limex;
+
+    }else{
+
+      giro=-velLim;
+
+    }
+
+    Chasis.arcadeDrive(vel, giro);
+
+  }
+
+  //False is Blue, True is Red
+  public boolean getalliance(){
+    
+        var alliance = DriverStation.getAlliance();
+         if (alliance.isPresent()) {
+          return alliance.get() == DriverStation.Alliance.Red;
+        }
+        return false; 
+  }
+
+  public void configprioritylime(){
+
+    if(getalliance()){
+      //Red
+      LimelightHelpers.setPriorityTagID(lime, 4);
+
+    }else{
+      //Blue
+      LimelightHelpers.setPriorityTagID(lime, 8);
+
+    }
 
   }
 
@@ -260,4 +310,7 @@ public class DriveSubsystem extends SubsystemBase {
     RgtMtrLdr.getConfigurator().apply(toConfigure);
     RgtMtrFllw.getConfigurator().apply(toConfigure);
   }
+
+  
+
 }
