@@ -32,12 +32,12 @@ import frc.robot.LimelightHelpers;
 public class DriveSubsystem extends SubsystemBase {
   //Motores
 //Declaracione de los motores derecchos
-  TalonFX RgtMtrLdr = new TalonFX(1, "rio");
-  TalonFX RgtMtrFllw = new TalonFX(2, "rio");
+  TalonFX RgtMtrLdr = new TalonFX(3, "rio");
+  TalonFX RgtMtrFllw = new TalonFX(4, "rio");
 
 //Declaracion de los motores izquierdos
-  TalonFX LftMtrLdr = new TalonFX(3, "rio");
-  TalonFX LftMtrFllw = new TalonFX(4, "rio");
+  TalonFX LftMtrLdr = new TalonFX(1, "rio");
+  TalonFX LftMtrFllw = new TalonFX(2, "rio");
 
 //Declaracion para el control diferencial de los motores que estan en el chasis
   DifferentialDrive Chasis = new DifferentialDrive(LftMtrLdr, RgtMtrLdr);
@@ -104,7 +104,7 @@ public class DriveSubsystem extends SubsystemBase {
 
 //==Metodo para controla el chasis=====================
   public void Arcade_Drive(double Speed, double Giro){
-    Chasis.arcadeDrive(Speed, Giro);
+    Chasis.arcadeDrive( Giro,-Speed);
 
 
 
@@ -182,18 +182,18 @@ public class DriveSubsystem extends SubsystemBase {
 
 //==Ecoders============================================
   public double RgtEnc() {
-    return (((RgtMtrLdr.getPosition().getValue()) + (RgtMtrFllw.getPosition().getValue())  / 2) / 4096 * Math.PI * 6 * 2.54) / 100;
+    return (((RgtMtrLdr.getPosition().getValue()) + (RgtMtrFllw.getPosition().getValue())  / 2) *0.88  /6.05) ;
   }
   public double LftEnc() {
-    return (((LftMtrLdr.getPosition().getValue()) + (LftMtrFllw.getPosition().getValue())  / 2) / 4096 * Math.PI * 6 * 2.54) / 100;
+    return (((LftMtrLdr.getPosition().getValue()) + (LftMtrFllw.getPosition().getValue())  / 2)  * Math.PI * 6 * 2.54) / 100;
   }
 
 //==Velocidad del los motores===========================
   public double RgtVel() {
-    return (((RgtMtrLdr.getVelocity().getValue()) + (RgtMtrFllw.getVelocity().getValue()) / 2) / 4096 * Math.PI * 6 * 2.54) / 10;
+    return (((RgtMtrLdr.getVelocity().getValue()) + (RgtMtrFllw.getVelocity().getValue()) / 2)  * Math.PI * 6 * 2.54) / 10;
   }
   public double LftVel() {
-    return (((LftMtrLdr.getVelocity().getValue()) + (LftMtrFllw.getVelocity().getValue()) / 2) / 4096 * Math.PI * 6 * 2.54) / 10;
+    return (((LftMtrLdr.getVelocity().getValue()) + (LftMtrFllw.getVelocity().getValue()) / 2)  * Math.PI * 6 * 2.54) / 10;
   }
 
 //Lectura de rotacion Navx
@@ -279,6 +279,8 @@ public class DriveSubsystem extends SubsystemBase {
     LeftConfiguration.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
     RigtConfiguration.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
 
+    
+
     LftMtrLdr.getConfigurator().apply(LeftConfiguration);
     LftMtrFllw.getConfigurator().apply(LeftConfiguration);
     RgtMtrLdr.getConfigurator().apply(RigtConfiguration);
@@ -292,9 +294,9 @@ public class DriveSubsystem extends SubsystemBase {
 
 
   //limites de corriente
-    CurrentLimitsConfigs m_currentLimits = new CurrentLimitsConfigs();
-    TalonFXConfiguration toConfigure = new TalonFXConfiguration();
-
+    //CurrentLimitsConfigs m_currentLimits = new CurrentLimitsConfigs();
+   // TalonFXConfiguration toConfigure = new TalonFXConfiguration();
+/* 
     m_currentLimits.SupplyCurrentLimit = 1; // Limit to 1 amps
     m_currentLimits.SupplyCurrentThreshold = 4; // If we exceed 4 amps
     m_currentLimits.SupplyTimeThreshold = 1.0; // For at least 1 second
@@ -304,11 +306,11 @@ public class DriveSubsystem extends SubsystemBase {
     m_currentLimits.StatorCurrentLimitEnable = true; // And enable it
 
     toConfigure.CurrentLimits = m_currentLimits;
-
-    LftMtrLdr.getConfigurator().apply(toConfigure);
-    LftMtrFllw.getConfigurator().apply(toConfigure);
-    RgtMtrLdr.getConfigurator().apply(toConfigure);
-    RgtMtrFllw.getConfigurator().apply(toConfigure);
+*/
+ //   LftMtrLdr.getConfigurator().apply(toConfigure);
+   // LftMtrFllw.getConfigurator().apply(toConfigure);
+    //RgtMtrLdr.getConfigurator().apply(toConfigure);
+    //RgtMtrFllw.getConfigurator().apply(toConfigure);
   }
 
   
