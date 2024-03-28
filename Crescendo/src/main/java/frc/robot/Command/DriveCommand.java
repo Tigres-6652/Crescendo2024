@@ -23,6 +23,7 @@ public class DriveCommand extends Command {
   public void initialize() {
     driveSubsystem.configtalon();    
     driveSubsystem.Lime_Light();
+    driveSubsystem.configprioritylime();
   }
 
 //Ejecucion de los metodos del subsistema (periodic)
@@ -30,7 +31,6 @@ public class DriveCommand extends Command {
   public void execute() {
     driveSubsystem.Arcade_Drive(FunSpd.get(), FunGrr.get());
     driveSubsystem.Smartdashboard();
-    //driveSubsystem.tanque(FunSpd.get()*12, FunSpd.get()*12);
   }
 
 //Finalisacion de los metodos del Subsistema
