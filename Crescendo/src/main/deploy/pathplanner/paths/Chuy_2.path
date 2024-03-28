@@ -1,0 +1,52 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 2.9,
+        "y": 6.7
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 2.923988766126999,
+        "y": 6.290872463120964
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 1.4,
+        "y": 5.55
+      },
+      "prevControl": {
+        "x": 2.9045123807922586,
+        "y": 5.57998439840296
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 2.3,
+    "maxAcceleration": 1.6,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 26.089398244436698,
+    "rotateFast": false
+  },
+  "reversed": true,
+  "folder": "Chuy Folder",
+  "previewStartingState": {
+    "rotation": 88.98411281251124,
+    "velocity": 0.0
+  },
+  "useDefaultConstraints": true
+}

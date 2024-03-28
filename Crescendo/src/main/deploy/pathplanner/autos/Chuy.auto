@@ -1,0 +1,43 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 1.4048307100172925,
+      "y": 5.55
+    },
+    "rotation": 0.0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Chuy_1"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Chuy_2"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Chuy_3"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Chuy_4"
+          }
+        }
+      ]
+    }
+  },
+  "folder": null,
+  "choreoAuto": false
+}

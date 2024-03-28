@@ -1,0 +1,84 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 1.4,
+        "y": 5.55076982040085
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 1.5,
+        "y": 5.55076982040085
+      },
+      "isLocked": true,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 2.339697206084804,
+        "y": 5.326791389051343
+      },
+      "prevControl": {
+        "x": 2.033508693270452,
+        "y": 5.505401354859715
+      },
+      "nextControl": {
+        "x": 2.5124529862644907,
+        "y": 5.226017183946526
+      },
+      "isLocked": true,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 2.748701298114341,
+        "y": 4.976216453026026
+      },
+      "prevControl": {
+        "x": 2.7002329040691917,
+        "y": 5.080077297408489
+      },
+      "nextControl": {
+        "x": 2.8850359954575193,
+        "y": 4.684070673004929
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 2.9,
+        "y": 4.4
+      },
+      "prevControl": {
+        "x": 2.9,
+        "y": 4.5
+      },
+      "nextControl": null,
+      "isLocked": true,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 2.3,
+    "maxAcceleration": 1.6,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 0,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": "Chuy Folder",
+  "previewStartingState": {
+    "rotation": 0,
+    "velocity": 0
+  },
+  "useDefaultConstraints": true
+}
