@@ -19,7 +19,7 @@ public class PiuuuSubsystem extends SubsystemBase {
 
   public void MtrShtVel(double ShtVel) {
     MtrShtUp.set(ShtVel);
-    MtrShtDwn.set(-ShtVel);
+    MtrShtDwn.set(-ShtVel*.63);
   }
   public PiuuuSubsystem() {}
 
