@@ -34,13 +34,13 @@ public class PiuuuCommand extends Command {
     
 
     if(Disp1.get()){
-      piuuuSubsystem.ShootRPM(50);
+      piuuuSubsystem.ShootRPM(5);
 
     }else if(Disp2.get()){
-      piuuuSubsystem.ShootRPM(100);
+      piuuuSubsystem.ShootRPM(150);
 
     }else{
-      piuuuSubsystem.MtrShtVel(0);
+      piuuuSubsystem.motoroff();
     }
   }
 
@@ -48,7 +48,7 @@ public class PiuuuCommand extends Command {
   @Override
   public void end(boolean interrupted) {
 
-      piuuuSubsystem.MtrShtVel(0);
+      piuuuSubsystem.motoroff();
 
 
   }

@@ -41,10 +41,10 @@ private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
 
   private void configureBindings() {
 //Control del robot
-  driveSubsystem.setDefaultCommand(new DriveCommand(driveSubsystem, () -> FirstD.getRawAxis(1)*.8, () -> FirstD.getRawAxis(4)*.8));
+  driveSubsystem.setDefaultCommand(new DriveCommand(driveSubsystem, () -> SecondD.getRawAxis(3)-SecondD.getRawAxis(2)*.8, () -> SecondD.getRawAxis(0)*.8));
 
 //Control del brazo (movimiento libre)
-  armSubsystem.setDefaultCommand(new ArmCommand(armSubsystem, () -> SecondD.getRawAxis(1),()-> SecondD.getRawButton(9),()->SecondD.getRawButton(10)));
+  armSubsystem.setDefaultCommand(new ArmCommand(armSubsystem, () -> SecondD.getRawAxis(5),()-> SecondD.getRawButton(9),()->SecondD.getRawButton(10)));
 
 //Control del Intake (seleccion de velocidades)
   new JoystickButton(SecondD, 1).toggleOnTrue(new IntakeCommand(intakeSubsystem, ()->true, ()->false, ()->false, ()->false));

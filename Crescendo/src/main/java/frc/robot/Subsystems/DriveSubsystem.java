@@ -89,6 +89,8 @@ public class DriveSubsystem extends SubsystemBase {
     m_odometry.update(getRotation2d(), LftEnc(), RgtEnc());
     Smartdashboard();
 
+    SmartDashboard.putBoolean("alliance", getalliance());
+
     if(  FirstD.getRawButton(9)){
       LimelightHelpers.setLEDMode_ForceBlink(lime);  
       }else{
@@ -104,7 +106,7 @@ public class DriveSubsystem extends SubsystemBase {
 
 //==Metodo para controla el chasis=====================
   public void Arcade_Drive(double Speed, double Giro){
-    Chasis.arcadeDrive( Giro,-Speed);
+    Chasis.arcadeDrive( Speed,-Giro);
 
 
 
@@ -276,8 +278,8 @@ public class DriveSubsystem extends SubsystemBase {
     var LeftConfiguration = new TalonFXConfiguration();
     var RigtConfiguration = new TalonFXConfiguration();
 
-    LeftConfiguration.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
-    RigtConfiguration.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
+    LeftConfiguration.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
+    RigtConfiguration.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
 
     
 

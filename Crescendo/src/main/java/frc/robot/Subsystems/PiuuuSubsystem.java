@@ -27,9 +27,9 @@ public class PiuuuSubsystem extends SubsystemBase {
   
 public void configPID(){
   TalonFXConfiguration config = new TalonFXConfiguration();
-  config.Slot0.kP=0.003;
+  config.Slot0.kP=0.5;
   config.Slot0.kI=0.0;
-  config.Slot0.kD=0.005;
+  config.Slot0.kD=0.00;
   config.Slot0.kV=0.12;
   config.Voltage.PeakForwardVoltage=8;
   config.Voltage.PeakReverseVoltage=-8;
@@ -37,11 +37,12 @@ public void configPID(){
   config.TorqueCurrent.PeakForwardTorqueCurrent=40;
   config.TorqueCurrent.PeakReverseTorqueCurrent=-40;
 
+  config.OpenLoopRamps.DutyCycleOpenLoopRampPeriod=3;
+  config.OpenLoopRamps.TorqueOpenLoopRampPeriod=3;
+  config.OpenLoopRamps.VoltageOpenLoopRampPeriod=3;
 
-  config.ClosedLoopRamps.DutyCycleClosedLoopRampPeriod=3;
-  config.ClosedLoopRamps.TorqueClosedLoopRampPeriod=3;
-  config.ClosedLoopRamps.VoltageClosedLoopRampPeriod=3
-  ;
+  //config.OpenLoopRamps.;
+  
   MtrShtDwn.getConfigurator().apply(config);
   MtrShtUp.getConfigurator().apply(config);
 
@@ -55,9 +56,10 @@ public void configPID(){
 
   public void ShootRPM(double rpms){
 
-    MtrShtDwn.setControl(m_voltage.withVelocity(rpms).withAcceleration(0.2));
-    MtrShtUp.setControl(m_voltage2.withVelocity(rpms).withAcceleration(0.2));
+    MtrShtDwn.setControl(m_voltage.withVelocity(rpms*0.63));
+    MtrShtUp.setControl(m_voltage2.withVelocity(rpms));
 
+   //MtrShtDwn.setControl(m_torque.withVelocity(rpms));
 
   }
 

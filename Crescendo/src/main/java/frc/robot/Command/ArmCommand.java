@@ -35,13 +35,13 @@ public class ArmCommand extends Command {
 
     }else if(MovSpeak.get()){
 
-            armSubsystem.RgtPstnVrbl(0);
+    armSubsystem.RgtPstnVrbl(30);
 
 
     }else{
-
-    armSubsystem.MtrInvNFllw(GoodMovend.get());
-
+    
+     armSubsystem.MtrInvNFllw(GoodMovend.get());
+      
 
     }
 
