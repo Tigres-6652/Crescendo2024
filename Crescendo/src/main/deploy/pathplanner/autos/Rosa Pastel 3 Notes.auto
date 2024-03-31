@@ -1,0 +1,37 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 0.75,
+      "y": 6.7
+    },
+    "rotation": 60.140983835076916
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Rosa Pastel 1"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Rosa Pastel 2"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Rosa Pastel 3"
+          }
+        }
+      ]
+    }
+  },
+  "folder": null,
+  "choreoAuto": false
+}

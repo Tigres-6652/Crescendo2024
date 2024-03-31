@@ -37,26 +37,20 @@ IntakeSubsystem intakeSubsystem;
   public void execute() {
 
     if(Sol1.get()){
-
-            intakeSubsystem.MtrItkVel(-0.6);
-
+      intakeSubsystem.MtrItkVel(-0.6);
 
     }else if(Sol2.get()){
-
-      intakeSubsystem.MtrItkVel(-0.4);
+      intakeSubsystem.MtrItkVel(-1);
 
 
     }else if(Agr1.get()){
-
-intakeSubsystem.MtrItkVel(0.6);
+      intakeSubsystem.MtrItkVel(0.6);
 
     }else if(Agr2.get()){
-
       intakeSubsystem.MtrItkVel(0.4);
 
 
     }else{
-
       intakeSubsystem.MtrItkVel(0);
 
 

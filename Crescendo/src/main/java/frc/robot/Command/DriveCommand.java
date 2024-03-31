@@ -9,12 +9,15 @@ public class DriveCommand extends Command {
 //Nombre de los comandos ara llamar en e container 
   private final DriveSubsystem driveSubsystem;
   private Supplier<Double> FunSpd, FunGrr;
+  private Supplier<Boolean> autoapuntado;
 
 //Declaracion del los comandos en el CommandBase 
-  public DriveCommand(DriveSubsystem driveSubsystem, Supplier<Double> FunSpd, Supplier<Double> FunGrr) {
+  public DriveCommand(DriveSubsystem driveSubsystem, Supplier<Double> FunSpd, Supplier<Double> FunGrr, Supplier<Boolean> autoapuntado) {
     this.FunGrr = FunGrr;
     this.FunSpd = FunSpd;
+    this.autoapuntado=autoapuntado;
     this.driveSubsystem = driveSubsystem;
+    
     addRequirements(driveSubsystem);
   }
 
@@ -29,7 +32,13 @@ public class DriveCommand extends Command {
 //Ejecucion de los metodos del subsistema (periodic)
   @Override
   public void execute() {
+    if(autoapuntado.get()){
+
+      driveSubsystem.AimAndDist(FunSpd.get());
+
+    }else{
     driveSubsystem.Arcade_Drive(FunSpd.get(), FunGrr.get());
+    }
     driveSubsystem.Smartdashboard();
   }
 

@@ -3,25 +3,41 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.9,
-        "y": 6.7
+        "x": 7.9,
+        "y": 7.45
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.923988766126999,
-        "y": 6.290872463120964
+        "x": 6.899999999999997,
+        "y": 7.45
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 1.4,
-        "y": 5.55
+        "x": 4.141830134487739,
+        "y": 7.462448630968333
       },
       "prevControl": {
-        "x": 2.9045123807922586,
-        "y": 5.57998439840296
+        "x": 5.520927580000073,
+        "y": 7.460392022211098
+      },
+      "nextControl": {
+        "x": 2.663418704214894,
+        "y": 7.464653343843546
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 0.75,
+        "y": 6.7
+      },
+      "prevControl": {
+        "x": 1.1816824636999004,
+        "y": 7.316506450078538
       },
       "nextControl": null,
       "isLocked": false,
@@ -39,14 +55,14 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 26.089398244436698,
+    "rotation": 0,
     "rotateFast": false
   },
   "reversed": true,
-  "folder": "4 notes Folder chuy",
+  "folder": "3 notes  Folder RosaPastel",
   "previewStartingState": {
-    "rotation": 88.98411281251124,
-    "velocity": 0.0
+    "rotation": 0,
+    "velocity": 0
   },
   "useDefaultConstraints": true
 }

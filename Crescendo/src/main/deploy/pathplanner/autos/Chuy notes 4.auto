@@ -34,6 +34,18 @@
           "data": {
             "pathName": "Chuy_4"
           }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Chuy_5"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Chuy_6"
+          }
         }
       ]
     }

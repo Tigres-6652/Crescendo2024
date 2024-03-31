@@ -9,13 +9,14 @@ public class ArmCommand extends Command {
 //Nombre de los comandos ara llamar en e container 
   private final ArmSubsystem armSubsystem;
   private Supplier<Double> GoodMovend;
-  private Supplier<Boolean> MovSpeak, MovAmp;
+  private Supplier<Boolean> MovSpeak, MovAmp, MovGrd;
 
 //Declaracion del los comandos en el CommandBase 
-  public ArmCommand (ArmSubsystem armSubsystem, Supplier<Double> GoodMovend, Supplier<Boolean> MovSpeak, Supplier<Boolean> MovAmp){
+  public ArmCommand (ArmSubsystem armSubsystem, Supplier<Double> GoodMovend, Supplier<Boolean> MovSpeak, Supplier<Boolean> MovAmp, Supplier<Boolean> MovGrd){
     this.GoodMovend = GoodMovend;
     this.MovSpeak = MovSpeak;
     this.MovAmp = MovAmp;
+    this.MovGrd = MovGrd;
     this.armSubsystem = armSubsystem;
     addRequirements(armSubsystem);
     
@@ -30,22 +31,18 @@ public class ArmCommand extends Command {
   public void execute() {
 
     if(MovAmp.get()){
-
-      armSubsystem.RgtPstnVrbl(70);
+      armSubsystem.anguloVariable();
 
     }else if(MovSpeak.get()){
+      armSubsystem.RgtPstnVrbl(14);
 
-    armSubsystem.RgtPstnVrbl(30);
+    }else if(MovGrd.get()){
+      armSubsystem.RgtPstnVrbl(32);
 
-
-    }else{
-    
-     armSubsystem.MtrInvNFllw(GoodMovend.get());
+    }else{    
+      armSubsystem.MtrInvNFllw(GoodMovend.get());
       
-
     }
-
-
   }
 
 //Finalisacion de los metodos del Subsistema

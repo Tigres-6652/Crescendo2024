@@ -21,7 +21,8 @@ public class RobotContainer {
   private final DriveSubsystem driveSubsystem = new DriveSubsystem();
   private final ArmSubsystem armSubsystem = new ArmSubsystem();
   private final PiuuuSubsystem piuuuSubsystem = new PiuuuSubsystem();
-private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
+  private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
+
 //declaracion de los controles
   private final Joystick FirstD = new Joystick(0);
   private final Joystick SecondD = new Joystick(1);
@@ -29,8 +30,6 @@ private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
   private final SendableChooser<Command> autoChooser;
 
   public RobotContainer() {
-
-
     
   configureBindings();
 //building the auto chooser for pathplanner
@@ -41,19 +40,23 @@ private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
 
   private void configureBindings() {
 //Control del robot
-  driveSubsystem.setDefaultCommand(new DriveCommand(driveSubsystem, () -> SecondD.getRawAxis(3)-SecondD.getRawAxis(2)*.8, () -> SecondD.getRawAxis(0)*.8));
+  driveSubsystem.setDefaultCommand(new DriveCommand(driveSubsystem, 
+    ()-> (((FirstD.getRawAxis(3)*.40)-(FirstD.getRawAxis(1)*.6))-(FirstD.getRawAxis(2)*.4)),
+    ()-> FirstD.getRawAxis(4)*.8, ()-> FirstD.getRawButton(1)));
 
 //Control del brazo (movimiento libre)
-  armSubsystem.setDefaultCommand(new ArmCommand(armSubsystem, () -> SecondD.getRawAxis(5),()-> SecondD.getRawButton(9),()->SecondD.getRawButton(10)));
+  armSubsystem.setDefaultCommand(new ArmCommand(armSubsystem, 
+    ()-> SecondD.getRawAxis(1), ()-> SecondD.getRawButton(6), 
+    ()-> SecondD.getRawButton(5), ()-> SecondD.getRawButton(8)));
 
 //Control del Intake (seleccion de velocidades)
   new JoystickButton(SecondD, 1).toggleOnTrue(new IntakeCommand(intakeSubsystem, ()->true, ()->false, ()->false, ()->false));
-  new JoystickButton(SecondD, 2).toggleOnTrue(new IntakeCommand(intakeSubsystem, ()->false, null, ()->false, ()->false));
+  new JoystickButton(SecondD, 9).toggleOnTrue(new IntakeCommand(intakeSubsystem, ()->false, ()->false, ()->false, ()->false));
   new JoystickButton(SecondD, 3).toggleOnTrue(new IntakeCommand(intakeSubsystem, ()->false, ()->false, ()->true, ()->false));
-  new JoystickButton(SecondD, 4).toggleOnTrue(new IntakeCommand(intakeSubsystem, ()->false, null, ()->false, ()->true));
+  new JoystickButton(SecondD, 10).toggleOnTrue(new IntakeCommand(intakeSubsystem, ()->false, null, ()->false, ()->false));
                                                                                                                                                       //Disp1       Disp2
-  new JoystickButton(SecondD, 5).toggleOnTrue(new PiuuuCommand(piuuuSubsystem, () -> true, () -> false));
-  new JoystickButton(SecondD, 6).toggleOnTrue(new PiuuuCommand(piuuuSubsystem, () -> false, () -> true));
+  new JoystickButton(SecondD, 2).toggleOnTrue(new PiuuuCommand(piuuuSubsystem, () -> true, () -> false));
+  new JoystickButton(SecondD, 4).toggleOnTrue(new PiuuuCommand(piuuuSubsystem, () -> false, () -> true));
 
 }
 
