@@ -13,16 +13,12 @@ public class IntakeCommand extends Command {
   /** Creates a new IntakeCommand. */
 
 
-private Supplier<Boolean> Sol1, Sol2, Agr1, Agr2;
+private Supplier<Boolean> Sol1, Agr1;
 
 IntakeSubsystem intakeSubsystem;
-  public IntakeCommand(IntakeSubsystem intakeSubsystem,Supplier<Boolean> Sol1, Supplier<Boolean> Sol2, 
-  Supplier<Boolean> Agr1, Supplier<Boolean> Agr2) {
-
+  public IntakeCommand(IntakeSubsystem intakeSubsystem,Supplier<Boolean> Sol1, Supplier<Boolean> Agr1) {
     this.Agr1 = Agr1;
-    this.Agr2 = Agr2;
     this.Sol1 = Sol1;
-    this.Sol2 = Sol2;
     this.intakeSubsystem=intakeSubsystem;
     addRequirements(intakeSubsystem);
 
@@ -39,24 +35,13 @@ IntakeSubsystem intakeSubsystem;
     if(Sol1.get()){
       intakeSubsystem.MtrItkVel(-0.6);
 
-    }else if(Sol2.get()){
-      intakeSubsystem.MtrItkVel(-1);
-
-
     }else if(Agr1.get()){
       intakeSubsystem.MtrItkVel(0.6);
-
-    }else if(Agr2.get()){
-      intakeSubsystem.MtrItkVel(0.4);
-
 
     }else{
       intakeSubsystem.MtrItkVel(0);
 
-
     }
-
-
   }
 
   // Called once the command ends or is interrupted.

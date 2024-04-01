@@ -8,14 +8,13 @@ import frc.robot.Subsystems.PiuuuSubsystem;
 public class PiuuuCommand extends Command {
 //Nombre de los comandos ara llamar en e container 
   private final PiuuuSubsystem piuuuSubsystem;
-  private Supplier<Boolean>  Disp1, Disp2;
+  private Supplier<Boolean>  Disp1, Disp2, Disp3;
 
 //Declaracion del los comandos en el CommandBase 
-  public PiuuuCommand(PiuuuSubsystem piuuuSubsystem, Supplier<Boolean> Disp1, Supplier<Boolean> Disp2){
-    
+  public PiuuuCommand(PiuuuSubsystem piuuuSubsystem, Supplier<Boolean> Disp1, Supplier<Boolean> Disp2, Supplier<Boolean> Disp3){
     this.Disp1 = Disp1;
     this.Disp2 = Disp2;
-
+    this.Disp3 = Disp3;
     this.piuuuSubsystem = piuuuSubsystem;
     addRequirements(piuuuSubsystem);
   }
@@ -37,6 +36,9 @@ public class PiuuuCommand extends Command {
 
     }else if(Disp2.get()){
       piuuuSubsystem.ShootRPM(40);
+
+    }else if(Disp3.get()){
+      piuuuSubsystem.ShootRPM(25);
 
     }else{
       piuuuSubsystem.MtrShtVel(0);

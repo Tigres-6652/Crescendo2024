@@ -2,25 +2,19 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.3464015540130732,
-      "y": 5.502078857064002
+      "x": 2,
+      "y": 2
     },
-    "rotation": 0.0
+    "rotation": 0
   },
   "command": {
     "type": "sequential",
     "data": {
       "commands": [
         {
-          "type": "path",
-          "data": {
-            "pathName": "Movitlity"
-          }
-        },
-        {
           "type": "named",
           "data": {
-            "name": "aimbot"
+            "name": "Aimbot.java"
           }
         }
       ]

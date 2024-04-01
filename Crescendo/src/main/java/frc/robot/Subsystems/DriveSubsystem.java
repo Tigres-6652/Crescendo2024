@@ -1,6 +1,6 @@
 package frc.robot.Subsystems;
 
-import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
+//import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.VelocityVoltage;
@@ -25,7 +25,6 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -143,7 +142,7 @@ public class DriveSubsystem extends SubsystemBase {
   vel = MathUtil.clamp(vel, -1.0, 1.0);
   giro = MathUtil.clamp(giro, -1.0, 1.0);
 
-  var speeds = DifferentialDrive.curvatureDriveIK(vel, giro, true);
+  //var speeds = DifferentialDrive.curvatureDriveIK(vel, giro, true);
 
 }
 

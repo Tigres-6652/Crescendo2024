@@ -1,12 +1,9 @@
 package frc.robot.Subsystems;
 
-import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 import com.ctre.phoenix6.configs.OpenLoopRampsConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
-import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.NeutralOut;
-import com.ctre.phoenix6.controls.VelocityTorqueCurrentFOC;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 
@@ -39,8 +36,8 @@ public void configPID(){
 
   CurrentLimitsConfigs m_currentLimits = new CurrentLimitsConfigs();
 
-   m_currentLimits.SupplyCurrentLimit = 20; // Limit to 1 amps
-   m_currentLimits.SupplyCurrentThreshold = 20; // If we exceed 4 amps
+   m_currentLimits.SupplyCurrentLimit = 30; // Limit to 1 amps
+   m_currentLimits.SupplyCurrentThreshold = 30; // If we exceed 4 amps
    m_currentLimits.SupplyTimeThreshold = 0.5; // For at least 1 second
    m_currentLimits.SupplyCurrentLimitEnable = true; // And enable it
 

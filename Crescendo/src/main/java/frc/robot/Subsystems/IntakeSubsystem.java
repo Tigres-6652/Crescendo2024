@@ -21,7 +21,7 @@ public class IntakeSubsystem extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("CIM", pdp.getCurrent(5));
-        SmartDashboard.putNumber("shoot1", pdp.getCurrent(3));
+    SmartDashboard.putNumber("shoot1", pdp.getCurrent(3));
     SmartDashboard.putNumber("shoot2", pdp.getCurrent(15));
 
   }
