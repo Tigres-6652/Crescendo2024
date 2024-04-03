@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 0.75,
-        "y": 6.7
+        "x": 1.6093327560320605,
+        "y": 6.72909113315261
       },
       "prevControl": {
-        "x": 1.3546074299128839,
-        "y": 7.563468895891559
+        "x": 1.7651438387099796,
+        "y": 6.88490221583053
       },
       "nextControl": null,
       "isLocked": false,
@@ -43,7 +43,7 @@
     "rotateFast": false
   },
   "reversed": true,
-  "folder": "3 notes  Folder RosaPastel",
+  "folder": "3_Notes_Amp RosaPastel",
   "previewStartingState": {
     "rotation": -4.45560283367734,
     "velocity": 0

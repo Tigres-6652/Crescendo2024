@@ -1,6 +1,5 @@
 package frc.robot.Subsystems;
 
-import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.VelocityVoltage;
@@ -13,7 +12,6 @@ import com.kauailabs.navx.frc.AHRS;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.util.ReplanningConfig;
 
-import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -25,7 +23,6 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -135,17 +132,7 @@ public class DriveSubsystem extends SubsystemBase {
     // LMtrEnc.set(ControlMode.Velocity,-Giro*4096);
 
   }
-  public void chasispi(double vel, double giro){
 
-  vel = MathUtil.applyDeadband(vel, .01);
-  giro = MathUtil.applyDeadband(giro, .01);
-
-  vel = MathUtil.clamp(vel, -1.0, 1.0);
-  giro = MathUtil.clamp(giro, -1.0, 1.0);
-
-  var speeds = DifferentialDrive.curvatureDriveIK(vel, giro, true);
-
-}
 
 
   public void configkraken() {
@@ -186,6 +173,8 @@ public class DriveSubsystem extends SubsystemBase {
 
   }
 
+
+
   // False is Blue, True is Red
   public boolean getalliance() {
 
@@ -213,13 +202,13 @@ public class DriveSubsystem extends SubsystemBase {
   public void tanque(double Lft, double Rgt) {
     // RMtrEnc.set(ControlMode.Velocity,-Rgt*4096);
     // LMtrEnc.set(ControlMode.Velocity,-Lft*4096);
-    // Chasis.tankDrive(-Lft/2.5, -Rgt/2.5);
+     Chasis.tankDrive(-Lft/2.5, -Rgt/2.5);
 
-    double rpsl = Lft * 9.08 / Math.PI / 6 / 2.54 * 100;
-    double rpsr = Rgt * 9.08 / Math.PI / 6 / 2.54 * 100;
+  //  double rpsl = Lft * 9.08 / Math.PI / 6 / 2.54 * 100;
+    //double rpsr = Rgt * 9.08 / Math.PI / 6 / 2.54 * 100;
 
-    RgtMtrLdr.setControl(m_voltage.withVelocity(rpsr));
-    LftMtrLdr.setControl(m_voltage2.withVelocity(rpsl));
+   // RgtMtrLdr.setControl(m_voltage.withVelocity(rpsr));
+    //LftMtrLdr.setControl(m_voltage2.withVelocity(rpsl));
 
     // RgtMtrLdr.setVoltage(Rgt * 3);
     // LftMtrLdr.setVoltage(Lft * 3);
