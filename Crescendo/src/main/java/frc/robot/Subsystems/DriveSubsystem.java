@@ -1,6 +1,5 @@
 package frc.robot.Subsystems;
 
-import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.VelocityVoltage;
@@ -13,7 +12,6 @@ import com.kauailabs.navx.frc.AHRS;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.util.ReplanningConfig;
 
-import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -25,13 +23,11 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.LimelightHelpers;
 
@@ -136,17 +132,7 @@ public class DriveSubsystem extends SubsystemBase {
     // LMtrEnc.set(ControlMode.Velocity,-Giro*4096);
 
   }
-  public void chasispi(double vel, double giro){
 
-  vel = MathUtil.applyDeadband(vel, .01);
-  giro = MathUtil.applyDeadband(giro, .01);
-
-  vel = MathUtil.clamp(vel, -1.0, 1.0);
-  giro = MathUtil.clamp(giro, -1.0, 1.0);
-
-  var speeds = DifferentialDrive.curvatureDriveIK(vel, giro, true);
-
-}
 
 
   public void configkraken() {

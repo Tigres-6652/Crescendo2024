@@ -33,7 +33,6 @@ public class DriveCommand extends Command {
   @Override
   public void execute() {
     if(autoapuntado.get()){
-
       driveSubsystem.AimAndDist(FunSpd.get());
 
     }else{
