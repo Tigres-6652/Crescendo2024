@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.Command.ArmCommand;
@@ -40,11 +41,12 @@ public class RobotContainer {
 
   public RobotContainer() {
   configureBindings();
-  //building the auto chooser for pathplanner
 
+//building the auto chooser for pathplanner
   autoChooser = AutoBuilder.buildAutoChooser();
   SmartDashboard.putData("AutoChooser", autoChooser);
-
+  
+  NamedCommands.registerCommand("Acomodo", new InstantCommand);
   NamedCommands.registerCommand("Acomodo", new Acomodo());
   NamedCommands.registerCommand("brazoAuto", new brazoApuntado());
   NamedCommands.registerCommand("disparar", new disparar());
