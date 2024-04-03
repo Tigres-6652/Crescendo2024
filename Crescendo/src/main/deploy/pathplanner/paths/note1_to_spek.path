@@ -33,7 +33,7 @@
   "eventMarkers": [
     {
       "name": "New Event Marker",
-      "waypointRelativePos": 0.7,
+      "waypointRelativePos": 0.75,
       "command": {
         "type": "parallel",
         "data": {
@@ -41,7 +41,7 @@
             {
               "type": "named",
               "data": {
-                "name": "AcomodoRUN"
+                "name": "ArmRUN"
               }
             }
           ]
@@ -78,7 +78,7 @@
     "rotateFast": false
   },
   "reversed": true,
-  "folder": "1_Note_Source",
+  "folder": "1_Note_Source yuju",
   "previewStartingState": {
     "rotation": 0,
     "velocity": 0
