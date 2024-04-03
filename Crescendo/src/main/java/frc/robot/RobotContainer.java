@@ -34,13 +34,16 @@ public class RobotContainer {
 
   public RobotContainer() {
 
- NamedCommands.registerCommand("intakeSTOP"  ,new InstantCommand(()-> intakeSubsystem.MtrItkVel(0), driveSubsystem));
- NamedCommands.registerCommand("intakeRUN"   ,new InstantCommand(()-> intakeSubsystem.MtrItkVel(-0.6), driveSubsystem));
- NamedCommands.registerCommand("piuuuSTOP"   ,new InstantCommand(()-> piuuuSubsystem.ShootRPM(50), piuuuSubsystem));
- NamedCommands.registerCommand("piuuuRUN"    ,new InstantCommand(()-> piuuuSubsystem.ShootRPM(0), piuuuSubsystem));
- NamedCommands.registerCommand("ArmSTOP"     ,new InstantCommand(()-> armSubsystem.anguloVariable(), armSubsystem));
- NamedCommands.registerCommand("ArnRUN"      ,new InstantCommand(()-> armSubsystem.RgtPstnVrbl(5.0), armSubsystem));
+ NamedCommands.registerCommand("intakeSTOP"  ,new InstantCommand(()-> intakeSubsystem.MtrItkVel(0), intakeSubsystem));
+ NamedCommands.registerCommand("intakeRUN"   ,new InstantCommand(()-> intakeSubsystem.MtrItkVel(-0.6), intakeSubsystem));
+  NamedCommands.registerCommand("intakedesRUN"   ,new InstantCommand(()-> intakeSubsystem.MtrItkVel(0.6), intakeSubsystem));
+ NamedCommands.registerCommand( "piuuuRUN"   ,new InstantCommand(()-> piuuuSubsystem.ShootRPM(3), piuuuSubsystem));
+ NamedCommands.registerCommand("piuuuSTOP"    ,new InstantCommand(()-> piuuuSubsystem.ShootRPM(0), piuuuSubsystem));
+ NamedCommands.registerCommand("ArmRUN"     ,new InstantCommand(()-> armSubsystem.anguloVariable(), armSubsystem));
+  NamedCommands.registerCommand("ArmWaitUp"      ,new InstantCommand(()-> armSubsystem.RgtPstnVrbl(16.0), armSubsystem));
+ NamedCommands.registerCommand("ArmWait"      ,new InstantCommand(()-> armSubsystem.RgtPstnVrbl(6.0), armSubsystem));
  NamedCommands.registerCommand("AcomodoRUN"  ,new InstantCommand(()-> driveSubsystem.AimAndDist(0), driveSubsystem));
+ NamedCommands.registerCommand("aimbot"  ,new InstantCommand(()-> driveSubsystem.AimAndDist(0), driveSubsystem));
 
   configureBindings();
 //building the auto chooser for pathplanner

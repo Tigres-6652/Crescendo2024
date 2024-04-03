@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.102946737328825,
-      "y": 6.78752028915683
+      "x": 1.0639939666593456,
+      "y": 4.099779112962734
     },
-    "rotation": 49.39870535499551
+    "rotation": -65.40020939484253
   },
   "command": {
     "type": "sequential",
@@ -14,7 +14,7 @@
         {
           "type": "named",
           "data": {
-            "name": "AcomodoRUN"
+            "name": "aimbot"
           }
         },
         {
@@ -26,7 +26,7 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 1.5
+            "waitTime": 2.0
           }
         },
         {
@@ -38,7 +38,7 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 0.75
+            "waitTime": 1.0
           }
         },
         {
@@ -48,33 +48,9 @@
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "ArmWait"
-          }
-        },
-        {
           "type": "path",
           "data": {
-            "pathName": "Rosa Pastel 1"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "aimbot"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "AcomodoRUN"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.2
+            "pathName": "1_note_to1"
           }
         },
         {
@@ -86,19 +62,19 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 0.2
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "piuuuRUN"
+            "waitTime": 0.25
           }
         },
         {
           "type": "named",
           "data": {
             "name": "intakeSTOP"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "note1_to_spek"
           }
         }
       ]

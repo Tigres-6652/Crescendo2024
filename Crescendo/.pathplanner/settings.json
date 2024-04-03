@@ -3,8 +3,10 @@
   "robotLength": 0.9,
   "holonomicMode": false,
   "pathFolders": [
+    "1_Note_Source",
+    "3 notes  Folder RosaPastel",
     "4 notes Folder chuy",
-    "3 notes  Folder RosaPastel"
+    "2_Note_Amp"
   ],
   "autoFolders": [],
   "defaultMaxVel": 2.3,

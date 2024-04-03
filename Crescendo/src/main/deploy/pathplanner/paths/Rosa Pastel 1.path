@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.75,
-        "y": 6.7
+        "x": 1.102946737328825,
+        "y": 6.78752028915683
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.2238303553020806,
-        "y": 7.520698249551616
+        "x": 1.804096609379459,
+        "y": 7.060189683843188
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.601955195652753,
-        "y": 7.000262390285308
+        "x": 2.8655596101227796,
+        "y": 7.021236913173707
       },
       "prevControl": {
-        "x": 1.7004904034580985,
-        "y": 7.000262390285308
+        "x": 1.5022126366909918,
+        "y": 5.998726683099867
       },
       "nextControl": null,
       "isLocked": false,
@@ -45,7 +45,7 @@
   "reversed": false,
   "folder": "3 notes  Folder RosaPastel",
   "previewStartingState": {
-    "rotation": 61.38954033403483,
+    "rotation": 56.745633425288,
     "velocity": 0
   },
   "useDefaultConstraints": true
