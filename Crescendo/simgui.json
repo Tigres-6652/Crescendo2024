@@ -6,6 +6,13 @@
       "/SmartDashboard/si": "String Chooser"
     }
   },
+  "NetworkTables": {
+    "transitory": {
+      "PathPlanner": {
+        "open": true
+      }
+    }
+  },
   "NetworkTables Info": {
     "visible": true
   }

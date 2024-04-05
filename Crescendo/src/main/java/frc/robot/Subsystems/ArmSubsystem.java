@@ -1,6 +1,5 @@
 package frc.robot.Subsystems;
 
-
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
@@ -19,18 +18,18 @@ public class ArmSubsystem extends SubsystemBase {
   ProfiledPIDController PIDMtrArm = new ProfiledPIDController(0.1, 0.0, 0.00,
       new TrapezoidProfile.Constraints(40, 20));
 
-
   DutyCycleEncoder m_Encoder = new DutyCycleEncoder(0);
   String lime = "limelight-limee";
-      double angulo;
-      double fijo = 14;
+  double angulo;
+  double fijo = 17;
+
   // Velocidad y Control de los Motores
   public void MtrInvNFllw(double SpdArm) {
 
-    if (PosicionEjeGrados() > 80 && SpdArm > 0) {
+    if (PosicionEjeGrados() > 90 && SpdArm > 0) {
       RgtMtrArm.set(-SpdArm);
       LftMtrArm.set(SpdArm);
-    } else if (PosicionEjeGrados() < 80 && PosicionEjeGrados() > 5) {
+    } else if (PosicionEjeGrados() < 90 && PosicionEjeGrados() > 5) {
 
       RgtMtrArm.set(-SpdArm);
       LftMtrArm.set(SpdArm);
@@ -41,10 +40,6 @@ public class ArmSubsystem extends SubsystemBase {
       RgtMtrArm.set(-0);
       LftMtrArm.set(0);
     }
-
-
-
-
   }
 
   public void RgtPstnVrbl(double grados) {
@@ -60,49 +55,49 @@ public class ArmSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    if(distance()>1){
-    angulo = 36+fijo-(Math.toDegrees(Math.tanh(1.36/distance())))+fijo;
-
+    if (distance() > 1 && distance() != 0) {
+      angulo = 32 - (Math.toDegrees(Math.tanh(1.36 / distance()))) + fijo;
+            //(Resta angle)
+      // angulo = Math.abs(fijo-(Math.toDegrees(Math.tanh(1.36/distance()))));
     }
+    SmartDashboard.putNumber("Resta angle", Math.toDegrees(Math.tanh(1.36 / distance())));
     SmartDashboard.putNumber("Distancia limelight", distance());
 
     SmartDashboard.putNumber("grados eje", PosicionEjeGrados());
 
     SmartDashboard.putNumber("distance encoder", m_Encoder.getDistance());
-      SmartDashboard.putNumber("angulocalculado", angulo);
-
+    SmartDashboard.putNumber("angulocalculado", angulo);
 
   }
 
-    public void anguloVariable(){
+  public void anguloVariable() {
 
-          RgtPstnVrbl(angulo);
+    RgtPstnVrbl(angulo);
 
-    }
+  }
 
+  public double distance() {
 
-    public double distance(){
-    
     double targetOffsetAngle_Vertical = LimelightHelpers.getTY(lime);
     // how many degrees back is your limelight rotated from perfectly vertical?
-    double limelightMountAngleDegrees = 30.0; 
+    double limelightMountAngleDegrees = 30.0;
 
     // distance from the center of the Limelight lens to the floor
-    double limelightLensHeightInches = 10.23; 
+    double limelightLensHeightInches = 10.23;
 
     // distance from the target to the floor
-    double goalHeightInches = 53.88; 
+    double goalHeightInches = 53.88;
 
     double angleToGoalDegrees = limelightMountAngleDegrees + targetOffsetAngle_Vertical;
     double angleToGoalRadians = angleToGoalDegrees * (3.14159 / 180.0);
 
-    //calculate distance
-    double distanceFromLimelightToGoalInches = (goalHeightInches - limelightLensHeightInches) / Math.tan(angleToGoalRadians);
-    double distanceFromLimelightToGoalMeters = (distanceFromLimelightToGoalInches*2.54)/100;
+    // calculate distance
+    double distanceFromLimelightToGoalInches = (goalHeightInches - limelightLensHeightInches)
+        / Math.tan(angleToGoalRadians);
+    double distanceFromLimelightToGoalMeters = (distanceFromLimelightToGoalInches * 2.54) / 100;
 
     return distanceFromLimelightToGoalMeters;
-}
-
+  }
 
   // 1 / 200
 

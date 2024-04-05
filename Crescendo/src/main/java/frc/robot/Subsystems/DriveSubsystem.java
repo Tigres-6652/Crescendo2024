@@ -202,7 +202,7 @@ public class DriveSubsystem extends SubsystemBase {
   public void tanque(double Lft, double Rgt) {
     // RMtrEnc.set(ControlMode.Velocity,-Rgt*4096);
     // LMtrEnc.set(ControlMode.Velocity,-Lft*4096);
-     Chasis.tankDrive(-Lft/2.5, -Rgt/2.5);
+     Chasis.tankDrive(Lft/3, Rgt/3);
 
   //  double rpsl = Lft * 9.08 / Math.PI / 6 / 2.54 * 100;
     //double rpsr = Rgt * 9.08 / Math.PI / 6 / 2.54 * 100;

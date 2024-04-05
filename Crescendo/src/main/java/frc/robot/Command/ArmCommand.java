@@ -9,16 +9,17 @@ public class ArmCommand extends Command {
 //Nombre de los comandos ara llamar en e container 
   private final ArmSubsystem armSubsystem;
   private Supplier<Double> GoodMovend;
-  private Supplier<Boolean> MovSpeak, AimBot, MovGrd, MovAmp;
+  private Supplier<Boolean> MovSpeak, AimBot, MovGrd, MovAmp, MovFlr;
   //, MovAbj;
 
 //Declaracion del los comandos en el CommandBase 
-  public ArmCommand (ArmSubsystem armSubsystem, Supplier<Double> GoodMovend, Supplier<Boolean> MovSpeak, Supplier<Boolean> Aimbot, Supplier<Boolean> MovGrd, Supplier<Boolean> MovAmp){
+  public ArmCommand (ArmSubsystem armSubsystem, Supplier<Double> GoodMovend, Supplier<Boolean> MovSpeak, Supplier<Boolean> Aimbot, Supplier<Boolean> MovGrd, Supplier<Boolean> MovAmp, Supplier<Boolean> MovFlr){
     this.GoodMovend = GoodMovend;
     this.MovSpeak = MovSpeak;
     this.AimBot = Aimbot;
     this.MovGrd = MovGrd;
-    this.MovAmp =MovAmp;
+    this.MovAmp = MovAmp;
+    this.MovFlr = MovFlr;
     this.armSubsystem = armSubsystem;
     addRequirements(armSubsystem);
     
@@ -36,13 +37,16 @@ public class ArmCommand extends Command {
       armSubsystem.anguloVariable();
 
     }else if(MovSpeak.get()){
-      armSubsystem.RgtPstnVrbl(14);
+      armSubsystem.RgtPstnVrbl(16);
 
     }else if(MovGrd.get()){
       armSubsystem.RgtPstnVrbl(32);
 
     }else if(MovAmp.get()){
       armSubsystem.RgtPstnVrbl(89);
+
+    }else if(MovFlr.get()){
+      armSubsystem.RgtPstnVrbl(5);
 
     }else{    
       armSubsystem.MtrInvNFllw(GoodMovend.get());

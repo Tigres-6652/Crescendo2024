@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.362207436158645,
-        "y": 7.254953537190586
+        "x": 1.4048307100172925,
+        "y": 5.4923406643966315
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.533824400982136,
-        "y": 7.771077748561191
+        "x": 2.0865041967331863,
+        "y": 5.502078857064002
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 8.29,
-        "y": 7.45
+        "x": 2.9045123807922586,
+        "y": 5.4923406643966315
       },
       "prevControl": {
-        "x": 5.913613915009562,
-        "y": 7.410764619868505
+        "x": 1.6775001047036502,
+        "y": 5.511817049731372
       },
       "nextControl": null,
       "isLocked": false,
@@ -43,9 +43,9 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "3_Note_Amp TeVas",
+  "folder": "1_Note_Source",
   "previewStartingState": {
-    "rotation": 0,
+    "rotation": -1.2188752351312635,
     "velocity": 0
   },
   "useDefaultConstraints": true
